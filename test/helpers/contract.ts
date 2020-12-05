@@ -1,7 +1,8 @@
 import { deployContract, MockProvider } from 'ethereum-waffle';
 import PlayerArtifact from '../../artifacts/contracts/Player.sol/Player.json';
+import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
 
-import { Player } from '../../typechain';
+import { Player, Cash } from '../../typechain';
 
 import { Signer } from 'ethers';
 import { ethers } from 'hardhat';
@@ -21,6 +22,10 @@ export async function getAccounts() {
 
 export async function deployPlayerContract(signer: Signer) {
   return (await deployContract(signer, PlayerArtifact)) as Player;
+}
+
+export async function deployCashContract(signer: Signer) {
+  return (await deployContract(signer, CashArtifact)) as Cash;
 }
 
 export async function mineBlock() {
