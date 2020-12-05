@@ -5,7 +5,6 @@ typechain:
 
 compile:
 	npx hardhat compile
-	cp -R artifacts/** app/src/build
 	make typechain
 
 compile-clean:
@@ -14,7 +13,7 @@ compile-clean:
 	make compile
 
 test:
-	npm run-script test
+	npm run-script test test/ShopTest.ts
 
 run-node:
 	@npx hardhat node

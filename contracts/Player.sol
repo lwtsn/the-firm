@@ -1,6 +1,5 @@
 pragma solidity ^0.6.0;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -11,7 +10,7 @@ contract Player is Ownable {
     mapping(address => bool) private accounts;
     mapping(address => uint256) private balance;
 
-    address cash;
+    address private cash;
 
     function setCash(address _cashAddress) onlyOwner public {
         cash = _cashAddress;
