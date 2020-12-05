@@ -15,13 +15,15 @@ contract Shop is Ownable {
     address itemRegister;
     address playerContract;
 
-    function purchase(address _itemAddress) public {
+    function purchase(address _itemAddress, uint256 _amount) public {
         Item memory itemListing = items[_itemAddress];
         uint256 balance = Player(playerContract).getBalance(msg.sender);
 
-        require(balance >= itemListing.price);
+        require(balance >= itemListing.price, "Not enough funds");
 
-        ItemBase(_itemAddress).mint(msg.sender, 1);
+
+
+        ItemBase(_itemAddress).mint(msg.sender, _amount);
     }
 
     function list(address _itemAddress, uint256 _price) onlyOwner public {

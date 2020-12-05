@@ -31,12 +31,23 @@ describe('Shop', () => {
     });
   });
 
-  it('Should allow purchasing of registered items', async () => {
-    await player.mock.getBalance.withArgs(alice.address).returns(oneEther.mul(200));
-    await item.mock.mint.withArgs(alice.address, 1).returns();
+  describe('Item purchasing', () => {
+    it('Should allow purchasing of registered items', async () => {
+      await player.mock.getBalance.withArgs(alice.address).returns(oneEther.mul(200));
+      await item.mock.mint.withArgs(alice.address, 1).returns();
 
-    await shop.list(item.address, oneEther.mul(100));
+      await shop.list(item.address, oneEther.mul(100));
 
-    await shop.purchase(item.address);
+      await shop.purchase(item.address, 1);
+    });
+
+    it('Should prevent purchasing items if player balance is too low', async () => {
+      await player.mock.getBalance.withArgs(alice.address).returns(oneEther.mul(200));
+      await item.mock.mint.withArgs(alice.address, 4).returns();
+
+      await shop.list(item.address, oneEther.mul(100));
+
+      expect(shop.purchase(item.address, 4)).to.be.revertedWith('Not enough funds');
+    });
   });
 });
