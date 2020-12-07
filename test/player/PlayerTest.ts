@@ -1,15 +1,15 @@
 import { expect } from 'chai';
-import { Cash, Player } from '../typechain';
-import { deployPlayerContract, getProvider } from './helpers/contract';
-import CashArtifact from '../artifacts/contracts/Cash.sol/Cash.json';
+import { Cash, Player } from '../../typechain';
+import { deployPlayerContract, getProvider } from '../helpers/contract';
+import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
 
-import { oneEther } from './helpers/numbers';
+import { oneEther } from '../helpers/numbers';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import { BigNumber } from 'ethers';
 
 const [alice, bob] = getProvider().getWallets();
 
-describe('Account', () => {
+describe('Player', () => {
   let cash: Cash | MockContract;
   let player: Player;
 

@@ -2,7 +2,7 @@ import { ItemBase, Player, Shop } from '../typechain';
 import { deployShopContract, getProvider } from './helpers/contract';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import ItemArtifact from '../artifacts/contracts/item/ItemBase.sol/ItemBase.json';
-import PlayerArtifact from '../artifacts/contracts/Player.sol/Player.json';
+import PlayerArtifact from '../artifacts/contracts/player/Player.sol/Player.json';
 import { oneEther } from './helpers/numbers';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';

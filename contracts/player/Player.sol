@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-import "./Cash.sol";
+import "../Cash.sol";
 
 contract Player is AccessControl {
     using SafeMath for uint256;
