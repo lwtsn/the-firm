@@ -1,11 +1,9 @@
 pragma solidity ^0.6.0;
 
 import "./BaseActivity.sol";
-import "../Cash.sol";
 
 contract YieldFarm is BaseActivity {
 
-    address cashAddress;
     uint256 baseEarning;
     uint256 earningBonus;
 
@@ -29,13 +27,14 @@ contract YieldFarm is BaseActivity {
     }
 
     function complete(address _who) override public {
-        uint256 successGauge = getSuccessGauge();
-
-        if (successChance >= successGauge) {
-            Cash(cashAddress).mint(_who, baseEarning);
-        } else {
-
-        }
+        mint(_who, 33);
+//        Cash(cashAddress).mint();
+        //        uint256 successGauge = getSuccessGauge();
+        //
+        //        if (successChance >= successGauge) {
+        //        } else {
+        //
+        //        }
     }
 
     function getActivityName() override pure internal returns (string memory) {

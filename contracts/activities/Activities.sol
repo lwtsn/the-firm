@@ -21,15 +21,15 @@ contract Activities {
     mapping(uint256 => Activity) public activities;
     mapping(address => OngoingActivity) public ongoingActivities;
 
-    uint internal nextActivityId;
+    uint public nextActivityId;
 
     constructor() public {
         nextActivityId = 1;
     }
 
-    function addActivity(address activityAddress) public {
+    function addActivity(address _activityAddress) public {
         activities[nextActivityId] = Activity({
-        activityAddress : activityAddress,
+        activityAddress : _activityAddress,
         isActivity : true
         });
 
@@ -60,5 +60,17 @@ contract Activities {
         ongoingActivities[msg.sender].activity = 0;
         ongoingActivities[msg.sender].timeStarted = 0;
         ongoingActivities[msg.sender].timeCompleting = 0;
+    }
+
+    function listActivities() public view returns (bool[] memory _schemes) {
+        bool[] memory activeSchemes = new bool[](nextActivityId);
+
+        for (uint256 i = 0; i < nextActivityId; i++) {
+            if (activities[i].isActivity) {
+                activeSchemes[i] = true;
+            }
+        }
+
+        return activeSchemes;
     }
 }

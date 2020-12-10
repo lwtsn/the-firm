@@ -24,6 +24,22 @@ describe('Activities', () => {
     });
   });
 
+  it('Should create a list of all active activities', async () => {
+    let activity2 = await deployMockContract(alice, BaseActivityArtifact.abi);
+    let activity3 = await deployMockContract(alice, BaseActivityArtifact.abi);
+
+    await activities.addActivity(activity.address);
+    await activities.addActivity(activity2.address);
+    await activities.addActivity(activity3.address);
+
+    await activities.listActivities().then((schemes: boolean[]) => {
+      expect(schemes[0]).to.be.false;
+      expect(schemes[1]).to.be.true;
+      expect(schemes[2]).to.be.true;
+      expect(schemes[3]).to.be.true;
+    });
+  });
+
   describe('Performing activity', () => {
     let duration = 3600;
 
@@ -63,23 +79,25 @@ describe('Activities', () => {
       });
     });
 
-    it('Should prevent starting an activity if one is already in progress', async () => {
-      await activities.startActivity(1);
-      await expect(activities.startActivity(1)).to.be.revertedWith('An activity is already in progress');
-    });
+    describe('Access control', () => {
+      it('Should prevent starting an activity if one is already in progress', async () => {
+        await activities.startActivity(1);
+        await expect(activities.startActivity(1)).to.be.revertedWith('An activity is already in progress');
+      });
 
-    it('Should prevent starting an invalid activity', async () => {
-      await expect(activities.startActivity(999)).to.be.revertedWith('Invalid activity chosen');
-    });
+      it('Should prevent starting an invalid activity', async () => {
+        await expect(activities.startActivity(999)).to.be.revertedWith('Invalid activity chosen');
+      });
 
-    it('Should prevent completing an activity if one is not in progress', async () => {
-      await expect(activities.completeActivity(1)).to.be.revertedWith('No activity in progress');
-    });
+      it('Should prevent completing an activity if one is not in progress', async () => {
+        await expect(activities.completeActivity(1)).to.be.revertedWith('No activity in progress');
+      });
 
-    it('Should prevent completing an activity before it the duration has passed', async () => {
-      await activities.startActivity(1);
+      it('Should prevent completing an activity before it the duration has passed', async () => {
+        await activities.startActivity(1);
 
-      await expect(activities.completeActivity(1)).to.be.revertedWith('Activity is not complete');
+        await expect(activities.completeActivity(1)).to.be.revertedWith('Activity is not complete');
+      });
     });
   });
 });

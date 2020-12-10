@@ -1,6 +1,7 @@
 pragma solidity ^0.6.0;
 
 import "../utils/Random.sol";
+import "../Cash.sol";
 
 abstract contract BaseActivity {
 
@@ -11,6 +12,7 @@ abstract contract BaseActivity {
     uint256 internal successChance;
 
     address internal randomNumberGenerator;
+    address internal cashContract;
 
     constructor(
         uint256 _duration,
@@ -26,13 +28,17 @@ abstract contract BaseActivity {
         randomNumberGenerator = _randomNumberGenerator;
     }
 
+    function setCashContract(address _cashContractAddress) public {
+        cashContract = _cashContractAddress;
+    }
+
     function start(address _who) virtual public {
         emit ActivityStarted(getActivityName(), _who, block.timestamp);
     }
 
     function complete(address _who) onlyActivityManager virtual public {}
 
-    function getActivityName() virtual pure internal returns(string memory) {
+    function getActivityName() virtual pure internal returns (string memory) {
         return "";
     }
 
@@ -40,7 +46,11 @@ abstract contract BaseActivity {
         return Random(randomNumberGenerator).random(100);
     }
 
-    function getActivity() public view returns(uint256 _duration, string memory _name) {
+    function mint(address _who, uint256 _amount) internal {
+        Cash(cashContract).mint(_who, _amount);
+    }
+
+    function getActivity() public view returns (uint256 _duration, string memory _name) {
         return (duration, getActivityName());
     }
 

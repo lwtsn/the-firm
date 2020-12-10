@@ -19,11 +19,14 @@ describe('Player Stats', () => {
       expect(stats.experience).to.eq(0);
       expect(stats.baseHealth).to.eq(100);
       expect(stats.currentHealth).to.eq(100);
+      expect(stats.isPlayer).to.eq(true);
+    });
+
+    await playerStats.getPlayerBattleStats(alice.address).then((stats: any) => {
       expect(stats.baseStrength).to.eq(20);
       expect(stats.baseDexterity).to.eq(20);
       expect(stats.baseDefence).to.eq(20);
       expect(stats.baseConstitution).to.eq(20);
-      expect(stats.isPlayer).to.eq(true);
     });
   });
 });
