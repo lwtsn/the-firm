@@ -40,7 +40,7 @@ contract Activities {
         require(activities[_activityId].isActivity, "Invalid activity chosen");
         require(ongoingActivities[msg.sender].hasActiveActivity == false, "An activity is already in progress");
 
-        BaseActivity(activities[_activityId].activityAddress).start();
+        BaseActivity(activities[_activityId].activityAddress).start(msg.sender);
 
         ongoingActivities[msg.sender].hasActiveActivity = true;
         ongoingActivities[msg.sender].activity = _activityId;
@@ -54,7 +54,7 @@ contract Activities {
         require(ongoingActivities[msg.sender].hasActiveActivity, "No activity in progress");
         require(block.timestamp >= ongoingActivities[msg.sender].timeCompleting, "Activity is not complete");
 
-        BaseActivity(activities[_activityId].activityAddress).complete();
+        BaseActivity(activities[_activityId].activityAddress).complete(msg.sender);
 
         ongoingActivities[msg.sender].hasActiveActivity = false;
         ongoingActivities[msg.sender].activity = 0;

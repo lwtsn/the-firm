@@ -12,27 +12,49 @@ contract PlayerStats is AccessControl {
         uint256 experience;
         uint256 baseHealth;
         uint256 currentHealth; // todo need to work out regeneration rate
+        bool isPlayer;
+        BattleStats battleStats;
+        FarmingStats farmingStats;
+    }
 
+    struct BattleStats {
         uint256 baseStrength; // attack
         uint256 baseDexterity; // speed
         uint256 baseDefence; // defence
         uint256 baseConstitution; // health
+    }
 
-        bool isPlayer;
+    struct FarmingStats {
+        uint256 degeneracy; // Higher gains
+        uint256 chadary; // Chance to succeed
+        uint256 fomostition; // Higher losses
+        uint256 rugpullable; // Chance to fail
     }
 
     mapping(address => Stats) playerStats;
 
     function createBasePlayer(address _who) onlyNewPlayer(_who) onlyPlayerManager public {
+        BattleStats memory battleStats = BattleStats({
+        baseStrength : 20,
+        baseDexterity : 20,
+        baseDefence : 20,
+        baseConstitution : 20
+        });
+
+        FarmingStats memory farmingStats = FarmingStats({
+        degeneracy : 0,
+        chadary : 0,
+        fomostition : 0,
+        rugpullable : 0
+        });
+
         playerStats[_who] = Stats({
         level : 1,
         experience : 0,
         baseHealth : 100,
         currentHealth : 100,
-        baseStrength : 20,
-        baseDexterity : 20,
-        baseDefence : 20,
-        baseConstitution : 20,
+        battleStats : battleStats,
+        farmingStats : farmingStats,
         isPlayer : true
         });
     }
@@ -42,10 +64,6 @@ contract PlayerStats is AccessControl {
         uint256 experience,
         uint256 baseHealth,
         uint256 currentHealth,
-        uint256 baseStrength,
-        uint256 baseDexterity,
-        uint256 baseDefence,
-        uint256 baseConstitution,
         bool isPlayer
     ) {
         Stats memory stats = playerStats[_who];
@@ -54,11 +72,23 @@ contract PlayerStats is AccessControl {
         stats.experience,
         stats.baseHealth,
         stats.currentHealth,
+        stats.isPlayer
+        );
+    }
+
+    function getPlayerBattleStats(address _who) public view returns (
+        uint256 baseStrength,
+        uint256 baseDexterity,
+        uint256 baseDefence,
+        uint256 baseConstitution
+    ) {
+        BattleStats memory stats = playerStats[_who].battleStats;
+
+        return (
         stats.baseStrength,
         stats.baseDexterity,
         stats.baseDefence,
-        stats.baseConstitution,
-        stats.isPlayer
+        stats.baseConstitution
         );
     }
 

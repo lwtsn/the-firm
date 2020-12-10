@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
-import { Activities, BaseActivity } from '../../typechain';
+import { Activities, YieldFarm } from '../../typechain';
 import BaseActivityArtifact from '../../artifacts/contracts/activities/BaseActivity.sol/BaseActivity.json';
 
 import { deployActivitiesContract, getBlockTime, getProvider, wait } from '../helpers/contract';
@@ -8,7 +8,7 @@ import { deployActivitiesContract, getBlockTime, getProvider, wait } from '../he
 const [alice] = getProvider().getWallets();
 
 describe('Activities', () => {
-  let activity: BaseActivity | MockContract;
+  let activity: YieldFarm | MockContract;
   let activities: Activities;
 
   beforeEach(async () => {

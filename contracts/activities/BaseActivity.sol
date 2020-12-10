@@ -2,11 +2,13 @@ pragma solidity ^0.6.0;
 
 import "../utils/Random.sol";
 
-contract BaseActivity {
+abstract contract BaseActivity {
+
+    event ActivityStarted(string name, address who, uint256 when);
 
     uint256 public duration;
-    uint256 experience;
-    uint256 successChance;
+    uint256 internal experience;
+    uint256 internal successChance;
 
     address internal randomNumberGenerator;
 
@@ -20,21 +22,30 @@ contract BaseActivity {
         successChance = _successChance;
     }
 
-    function start() virtual public {
-    }
-
-    function complete() virtual public {
-    }
-
     function setRandomNumberGenerator(address _randomNumberGenerator) public {
         randomNumberGenerator = _randomNumberGenerator;
     }
 
-    function wasSuccessful() internal virtual {
-        uint result = Random(randomNumberGenerator).random(100);
+    function start(address _who) virtual public {
+        emit ActivityStarted(getActivityName(), _who, block.timestamp);
     }
 
-    function getActivity() public view returns (uint256 _duration, uint256 _experience, uint256 _successChance) {
-        return (duration, experience, successChance);
+    function complete(address _who) onlyActivityManager virtual public {}
+
+    function getActivityName() virtual pure internal returns(string memory) {
+        return "";
+    }
+
+    function getSuccessGauge() internal virtual returns (uint256 _successGauge) {
+        return Random(randomNumberGenerator).random(100);
+    }
+
+    function getActivity() public view returns(uint256 _duration, string memory _name) {
+        return (duration, getActivityName());
+    }
+
+    modifier onlyActivityManager() {
+        require(true);
+        _;
     }
 }

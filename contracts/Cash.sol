@@ -8,4 +8,8 @@ contract Cash is ERC20 {
     function burn(uint256 _amount) public {
         _burn(msg.sender, _amount);
     }
+
+    function mint(address _who, uint256 _amount) public {
+        _mint(_who, _amount);
+    }
 }
