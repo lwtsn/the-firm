@@ -1,8 +1,8 @@
 pragma solidity ^0.6.0;
 
-import "./BaseActivity.sol";
+import "./BaseScheme.sol";
 
-contract YieldFarm is BaseActivity {
+contract YieldFarm is BaseScheme {
 
     uint256 baseEarning;
     uint256 earningBonus;
@@ -13,7 +13,7 @@ contract YieldFarm is BaseActivity {
         uint256 _chanceOfSuccess,
         uint256 _baseEarning,
         uint256 _earningBonus
-    ) BaseActivity(
+    ) BaseScheme(
         _duration,
         _experience,
         _chanceOfSuccess
@@ -37,7 +37,7 @@ contract YieldFarm is BaseActivity {
         //        }
     }
 
-    function getActivityName() override pure internal returns (string memory) {
+    function getSchemeName() override pure internal returns (string memory) {
         return "Yield farm";
     }
 }

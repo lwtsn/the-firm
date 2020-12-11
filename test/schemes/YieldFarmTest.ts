@@ -2,14 +2,14 @@ import { expect } from 'chai';
 import { deployContract, deployMockContract, MockContract } from 'ethereum-waffle';
 import { Random, YieldFarm, Cash } from '../../typechain';
 import RandomArtifact from '../../artifacts/contracts/utils/Random.sol/Random.json';
-import YieldFarmArtifact from '../../artifacts/contracts/activities/YieldFarm.sol/YieldFarm.json';
+import YieldFarmArtifact from '../../artifacts/contracts/Schemes/YieldFarm.sol/YieldFarm.json';
 import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
 
 import { getProvider } from '../helpers/contract';
 
 const [alice] = getProvider().getWallets();
 
-describe('Activities', () => {
+describe('Schemes', () => {
   let random: Random | MockContract;
   let cash: Cash | MockContract;
   let yieldFarm: YieldFarm;
@@ -37,9 +37,9 @@ describe('Activities', () => {
   });
 
   it('Should allow creation of new the Yield Farm contract', async () => {
-    await yieldFarm.getActivity().then((activity: any) => {
-      expect(activity._name).to.eq('Yield farm');
-      expect(activity._duration).to.eq(duration);
+    await yieldFarm.getScheme().then((Scheme: any) => {
+      expect(Scheme._name).to.eq('Yield farm');
+      expect(Scheme._duration).to.eq(duration);
       // todo check the other variables
     });
   });

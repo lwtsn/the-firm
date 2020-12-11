@@ -3,9 +3,9 @@ pragma solidity ^0.6.0;
 import "../utils/Random.sol";
 import "../Cash.sol";
 
-abstract contract BaseActivity {
+abstract contract BaseScheme {
 
-    event ActivityStarted(string name, address who, uint256 when);
+    event SchemeStarted(string name, address who, uint256 when);
 
     uint256 public duration;
     uint256 internal experience;
@@ -33,12 +33,12 @@ abstract contract BaseActivity {
     }
 
     function start(address _who) virtual public {
-        emit ActivityStarted(getActivityName(), _who, block.timestamp);
+        emit SchemeStarted(getSchemeName(), _who, block.timestamp);
     }
 
-    function complete(address _who) onlyActivityManager virtual public {}
+    function complete(address _who) onlySchemeManager virtual public {}
 
-    function getActivityName() virtual pure internal returns (string memory) {
+    function getSchemeName() virtual pure internal returns (string memory) {
         return "";
     }
 
@@ -50,11 +50,11 @@ abstract contract BaseActivity {
         Cash(cashContract).mint(_who, _amount);
     }
 
-    function getActivity() public view returns (uint256 _duration, string memory _name) {
-        return (duration, getActivityName());
+    function getScheme() public view returns (uint256 _duration, string memory _name) {
+        return (duration, getSchemeName());
     }
 
-    modifier onlyActivityManager() {
+    modifier onlySchemeManager() {
         require(true);
         _;
     }

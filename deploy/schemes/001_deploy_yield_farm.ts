@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
 
-import { ACTIVITY_SCROUNGE_FOR_SATOSHIS } from './constants';
+import { SCHEME_YIELD_FARM } from './constants';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
@@ -9,14 +9,14 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts();
 
-  const duration = 3600;
-  const experience = 100;
-  const chanceOfSuccess = 50;
-  const baseEarning = 25;
-  const earningBonus = 10;
+  const duration = 43200;
+  const experience = 500;
+  const chanceOfSuccess = 33;
+  const baseEarning = 1000;
+  const earningBonus = 750;
 
-  log('Deploying Activity Yield Farm...');
-  await deploy(ACTIVITY_SCROUNGE_FOR_SATOSHIS, {
+  log('Deploying Scheme Yield Farm...');
+  await deploy(SCHEME_YIELD_FARM, {
     from: deployer,
     log: true,
     args: [duration, experience, chanceOfSuccess, baseEarning, earningBonus],
@@ -25,4 +25,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = [ACTIVITY_SCROUNGE_FOR_SATOSHIS];
+func.tags = [SCHEME_YIELD_FARM];

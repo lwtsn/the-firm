@@ -3,9 +3,9 @@ import PlayerArtifact from '../../artifacts/contracts/player/Player.sol/Player.j
 import PlayerStatsArtifact from '../../artifacts/contracts/player/PlayerStats.sol/PlayerStats.json';
 import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
 import ShopArtifact from '../../artifacts/contracts/Shop.sol/Shop.json';
-import ActivitiesArtifact from '../../artifacts/contracts/activities/Activities.sol/Activities.json';
+import SchemesArtifact from '../../artifacts/contracts/Schemes/Schemes.sol/Schemes.json';
 
-import { Activities, Cash, Player, PlayerStats, Shop } from '../../typechain';
+import { Schemes, Cash, Player, PlayerStats, Shop } from '../../typechain';
 
 import { Signer } from 'ethers';
 import { ethers } from 'hardhat';
@@ -23,8 +23,8 @@ export async function getAccounts() {
   return await ethers.getSigners();
 }
 
-export async function deployActivitiesContract(signer: Signer) {
-  return (await deployContract(signer, ActivitiesArtifact)) as Activities;
+export async function deploySchemesContract(signer: Signer) {
+  return (await deployContract(signer, SchemesArtifact)) as Schemes;
 }
 
 export async function deployShopContract(signer: Signer) {
