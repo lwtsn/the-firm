@@ -11,9 +11,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const player = await deployments.get(PLAYER);
 
   console.log('Setting setting player manager: ' + player.address);
-  await execute(PLAYER_STATS, { from: deployer, log: true }, 'addScheme', player.address);
+  await execute(PLAYER_STATS, { from: deployer, log: true }, 'setPlayerManager', player.address);
 };
 
 export default func;
 
-func.tags = [SCHEMES];
+func.tags = [PLAYER_STATS];

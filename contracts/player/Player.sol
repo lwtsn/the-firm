@@ -14,6 +14,7 @@ contract Player is AccessControl {
     mapping(address => uint256) private balances;
 
     address private cashAddress;
+    address private playerStats;
 
     bytes32 public constant ADMIN = keccak256("ADMIN");
     bytes32 public constant CASH_SPENDER = keccak256("CASH_SPENDER");
@@ -25,6 +26,10 @@ contract Player is AccessControl {
 
     function setCashAddress(address _cashAddress) onlyAdmin public {
         cashAddress = _cashAddress;
+    }
+
+    function setPlayerStatsAddress(address _playerStats) onlyAdmin public {
+        playerStats = _playerStats;
     }
 
     function setCashSpender(address _who) onlyAdmin public {
