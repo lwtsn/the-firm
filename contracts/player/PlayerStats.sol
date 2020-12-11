@@ -32,6 +32,19 @@ contract PlayerStats is AccessControl {
     }
 
     mapping(address => Stats) playerStats;
+    address public playerManager;
+
+    bytes32 public constant ADMIN = keccak256("ADMIN");
+    bytes32 public constant PLAYER_MANAGER = keccak256("PLAYER_MANAGER");
+
+    constructor() public {
+        _setupRole(ADMIN, msg.sender);
+        _setRoleAdmin(PLAYER_MANAGER, ADMIN);
+    }
+
+    function setPlayerManager(address _playerManager) onlyAdmin public {
+        grantRole(PLAYER_MANAGER, _playerManager);
+    }
 
     function createBasePlayer(address _who) onlyNewPlayer(_who) onlyPlayerManager public {
         BattleStats memory battleStats = BattleStats({
@@ -92,14 +105,18 @@ contract PlayerStats is AccessControl {
         );
     }
 
-
-    modifier onlyPlayerManager() {
-        require(1 == 1, "Only player manager");
+    modifier onlyNewPlayer(address _who) {
+        require(playerStats[_who].isPlayer == false, "Player already exists");
         _;
     }
 
-    modifier onlyNewPlayer(address _who) {
-        require(playerStats[_who].isPlayer == false, "Player already exists");
+    modifier onlyPlayerManager() {
+        require(hasRole(PLAYER_MANAGER, msg.sender), "Not Player Manager");
+    _;
+    }
+
+    modifier onlyAdmin() {
+        require(hasRole(ADMIN, msg.sender), "Not Admin");
         _;
     }
 }

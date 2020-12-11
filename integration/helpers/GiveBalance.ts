@@ -1,6 +1,4 @@
-import { BigNumber, Contract } from 'ethers';
-import { Deployment } from 'hardhat-deploy/dist/types';
-import DAI_ABI from '../../ABI/Erc20/DAI.json';
+import { BigNumber } from 'ethers';
 import { DAI_OWNER, ME } from '../constants';
 
 const oneEther = BigNumber.from(1).mul(BigNumber.from(10).pow(18));
