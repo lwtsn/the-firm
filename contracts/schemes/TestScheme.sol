@@ -2,7 +2,7 @@ pragma solidity ^0.6.0;
 
 import "./BaseScheme.sol";
 
-contract YieldFarm is BaseScheme {
+contract TestScheme is BaseScheme {
 
     uint256 baseEarning;
     uint256 earningBonus;
@@ -27,13 +27,7 @@ contract YieldFarm is BaseScheme {
     }
 
     function complete(address _who) override public {
-        uint256 successGauge = getSuccessGauge();
-
-        if (successChance >= successGauge) {
-            mint(_who, 33);
-        } else {
-
-        }
+        mint(_who, 33);
     }
 
     function getSchemeName() override pure internal returns (string memory) {

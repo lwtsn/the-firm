@@ -51,6 +51,13 @@ describe('Schemes', () => {
     });
 
     it('Should allow schemes to be started', async () => {
+      await schemes.getOngoingScheme(alice.address).then((scheme: any) => {
+        expect(scheme._schemeId).to.eq(0);
+        expect(scheme._isOngoing).to.eq(false);
+        expect(scheme._timeCompleting).to.eq(0);
+        expect(scheme._timeStarted).to.eq(0);
+      });
+
       await schemes.startScheme(1);
 
       let time = await getBlockTime();

@@ -40,7 +40,6 @@ describe('Schemes', () => {
     await yieldFarm.getScheme().then((Scheme: any) => {
       expect(Scheme._name).to.eq('Yield farm');
       expect(Scheme._duration).to.eq(duration);
-      // todo check the other variables
     });
   });
 
