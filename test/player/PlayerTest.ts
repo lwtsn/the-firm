@@ -26,9 +26,9 @@ describe('Player', () => {
 
   describe('Player creation', () => {
     it('Should allow creation of a player', async () => {
-      await player.create();
+      await playerStats.mock.createBasePlayer.withArgs(alice.address).returns();
 
-      await playerStats.mock.createBasePlayer.withArgs(alice.address);
+      await player.create();
 
       await player.isPlayer(alice.address).then((isPlayer: boolean) => {
         expect(isPlayer).to.be.true;
@@ -38,12 +38,22 @@ describe('Player', () => {
         expect(balance).to.eq(0);
       });
     });
+
+    describe('Restictions', () => {
+      it('Should prevent creating the same player twice', async () => {
+        await playerStats.mock.createBasePlayer.withArgs(alice.address).returns();
+
+        await player.create();
+        await expect(player.create()).to.be.revertedWith('Account already exists');
+      });
+    });
   });
 
   describe('Balances', () => {
     beforeEach(async () => {
-      await player.create();
+      await playerStats.mock.createBasePlayer.withArgs(alice.address).returns();
       await player.setCashSpender(alice.address);
+      await player.create();
     });
 
     it('Should allow depositing of cash', async () => {

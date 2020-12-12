@@ -12,16 +12,17 @@ contract Schemes {
     }
 
     struct OngoingScheme {
-        uint256 scheme;
+        uint256 schemeId;
         uint256 timeStarted;
         uint256 timeCompleting;
-        bool hasActiveScheme;
     }
 
-    mapping(uint256 => Scheme) public schemes;
-    mapping(address => OngoingScheme) public ongoingSchemes;
-
     uint public nextSchemeId;
+
+    mapping(address => OngoingScheme) internal ongoingSchemes;
+    mapping(address => bool) internal hasOngoingScheme;
+
+    mapping(uint256 => Scheme) public schemes;
 
     constructor() public {
         nextSchemeId = 1;
@@ -38,28 +39,20 @@ contract Schemes {
 
     function startScheme(uint256 _schemeId) public {
         require(schemes[_schemeId].isScheme, "Invalid scheme chosen");
-        require(ongoingSchemes[msg.sender].hasActiveScheme == false, "An scheme is already in progress");
+        require(hasOngoingScheme[msg.sender] == false, "A scheme is already in progress");
 
         BaseScheme(schemes[_schemeId].schemeAddress).start(msg.sender);
 
-        ongoingSchemes[msg.sender].hasActiveScheme = true;
-        ongoingSchemes[msg.sender].scheme = _schemeId;
-        ongoingSchemes[msg.sender].timeStarted = block.timestamp;
-        ongoingSchemes[msg.sender].timeCompleting = block.timestamp.add(
-            BaseScheme(schemes[_schemeId].schemeAddress).duration()
-        );
+        start(msg.sender, _schemeId);
     }
 
     function completeScheme(uint256 _schemeId) public {
-        require(ongoingSchemes[msg.sender].hasActiveScheme, "No scheme in progress");
+        require(hasOngoingScheme[msg.sender], "No scheme in progress");
         require(block.timestamp >= ongoingSchemes[msg.sender].timeCompleting, "Scheme is not complete");
 
         BaseScheme(schemes[_schemeId].schemeAddress).complete(msg.sender);
 
-        ongoingSchemes[msg.sender].hasActiveScheme = false;
-        ongoingSchemes[msg.sender].scheme = 0;
-        ongoingSchemes[msg.sender].timeStarted = 0;
-        ongoingSchemes[msg.sender].timeCompleting = 0;
+        complete(msg.sender, _schemeId);
     }
 
     function listSchemes() public view returns (bool[] memory _schemes) {
@@ -72,5 +65,48 @@ contract Schemes {
         }
 
         return activeSchemes;
+    }
+
+    function start(address _who, uint256 _schemeId) internal {
+        require(false == hasOngoingScheme[_who], "A scheme is already in progress");
+
+        hasOngoingScheme[_who] = true;
+
+        ongoingSchemes[msg.sender].schemeId = _schemeId;
+        ongoingSchemes[msg.sender].timeStarted = block.timestamp;
+        ongoingSchemes[msg.sender].timeCompleting = block.timestamp.add(
+            BaseScheme(schemes[_schemeId].schemeAddress).duration()
+        );
+    }
+
+    function complete(address _who, uint256 _schemeId) internal {
+        require(hasOngoingScheme[msg.sender], "No scheme in progress");
+
+        hasOngoingScheme[_who] = false;
+
+        ongoingSchemes[msg.sender].schemeId = 0;
+        ongoingSchemes[msg.sender].timeStarted = 0;
+        ongoingSchemes[msg.sender].timeCompleting = 0;
+    }
+
+    function getOngoingScheme(address _who) public view returns (
+        bool _isOngoing,
+        uint256 _schemeId,
+        address _schemeAddress,
+        uint256 _timeStarted,
+        uint256 _timeCompleting
+    ) {
+        if (hasOngoingScheme[_who]) {
+            uint256 schemeId = ongoingSchemes[_who].schemeId;
+
+            return (
+            true,
+            schemeId,
+            schemes[schemeId].schemeAddress,
+            ongoingSchemes[_who].timeStarted,
+            ongoingSchemes[_who].timeCompleting
+            );
+        }
+        return (false, 0, address(0), 0, 0);
     }
 }

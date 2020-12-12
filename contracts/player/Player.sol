@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 import "../Cash.sol";
+import "./PlayerStats.sol";
 
 contract Player is AccessControl {
     using SafeMath for uint256;
@@ -41,6 +42,8 @@ contract Player is AccessControl {
 
         accounts[msg.sender] = true;
         balances[msg.sender] = 0;
+
+        PlayerStats(playerStats).createBasePlayer(msg.sender);
     }
 
     function depositCash(uint256 _amount) hasAccount(msg.sender) public {

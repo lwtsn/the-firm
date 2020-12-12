@@ -55,11 +55,11 @@ describe('Schemes', () => {
 
       let time = await getBlockTime();
 
-      await schemes.ongoingSchemes(alice.address).then((scheme: any) => {
-        expect(scheme.hasActiveScheme).to.eq(true);
-        expect(scheme.scheme).to.eq(1);
-        expect(scheme.timeStarted).to.eq(time);
-        expect(scheme.timeCompleting).to.eq(time + duration);
+      await schemes.getOngoingScheme(alice.address).then((scheme: any) => {
+        expect(scheme._isOngoing).to.eq(true);
+        expect(scheme._schemeId).to.eq(1);
+        expect(scheme._timeStarted).to.eq(time);
+        expect(scheme._timeCompleting).to.eq(time + duration);
       });
     });
 
@@ -71,18 +71,18 @@ describe('Schemes', () => {
 
       await schemes.completeScheme(1);
 
-      await schemes.ongoingSchemes(alice.address).then((scheme: any) => {
-        expect(scheme.hasActiveScheme).to.eq(false);
-        expect(scheme.scheme).to.eq(0);
-        expect(scheme.timeStarted).to.eq(0);
-        expect(scheme.timeCompleting).to.eq(0);
+      await schemes.getOngoingScheme(alice.address).then((scheme: any) => {
+        expect(scheme._isOngoing).to.eq(false);
+        expect(scheme._schemeId).to.eq(0);
+        expect(scheme._timeStarted).to.eq(0);
+        expect(scheme._timeCompleting).to.eq(0);
       });
     });
 
-    describe('Access control', () => {
+    describe('Restrictions', () => {
       it('Should prevent starting an scheme if one is already in progress', async () => {
         await schemes.startScheme(1);
-        await expect(schemes.startScheme(1)).to.be.revertedWith('An scheme is already in progress');
+        await expect(schemes.startScheme(1)).to.be.revertedWith('A scheme is already in progress');
       });
 
       it('Should prevent starting an invalid scheme', async () => {
