@@ -46,13 +46,14 @@ contract Schemes {
         start(msg.sender, _schemeId);
     }
 
-    function completeScheme(uint256 _schemeId) public {
+    function completeScheme() public {
         require(hasOngoingScheme[msg.sender], "No scheme in progress");
         require(block.timestamp >= ongoingSchemes[msg.sender].timeCompleting, "Scheme is not complete");
 
-        BaseScheme(schemes[_schemeId].schemeAddress).complete(msg.sender);
+        uint256 schemeId = ongoingSchemes[msg.sender].schemeId;
+        BaseScheme(schemes[schemeId].schemeAddress).complete(msg.sender);
 
-        complete(msg.sender, _schemeId);
+        complete(msg.sender, schemeId);
     }
 
     function listSchemes() public view returns (bool[] memory _schemes) {
