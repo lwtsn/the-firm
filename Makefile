@@ -13,7 +13,7 @@ compile-clean:
 	make compile
 
 test:
-	npm run-script test test/schemes/YieldFarmTest.ts
+	npm run-script test test/player/PlayerStatsTest.ts
 
 run-node:
 	@npx hardhat node

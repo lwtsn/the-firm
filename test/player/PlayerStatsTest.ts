@@ -31,6 +31,25 @@ describe('Player Stats', () => {
       expect(stats.baseDefence).to.eq(20);
       expect(stats.baseConstitution).to.eq(20);
     });
+
+    await playerStats.getPlayerFarmingStats(alice.address).then((stats: any) => {
+      expect(stats._degeneracy).to.eq(0);
+      expect(stats._chadary).to.eq(0);
+      expect(stats._fomostition).to.eq(0);
+      expect(stats._rugpullable).to.eq(0);
+    });
+  });
+  it('Should allow player farming stats to be increased', async () => {
+    await playerStats.createBasePlayer(alice.address);
+
+    await playerStats.increaseFarmingStats(alice.address, 40, 40, 40, 40);
+
+    await playerStats.getPlayerFarmingStats(alice.address).then((stats: any) => {
+      expect(stats._degeneracy).to.eq(40);
+      expect(stats._chadary).to.eq(40);
+      expect(stats._fomostition).to.eq(40);
+      expect(stats._rugpullable).to.eq(40);
+    });
   });
 
   describe('Restrictions', () => {
@@ -46,6 +65,18 @@ describe('Player Stats', () => {
 
     it('Should prevent creating a new player unless player manager', async () => {
       await expect(bobConnectedPlayerStats.createBasePlayer(bob.address)).to.be.revertedWith('Not Player Manager');
+    });
+
+    it('Should prevent increasing farming stats for non player managers', async () => {
+      await expect(playerStats.increaseFarmingStats(bob.address, 40, 40, 40, 40)).to.be.revertedWith(
+        "Player doesn't exist"
+      );
+    });
+
+    it('Should prevent increasing farming stats for non player', async () => {
+      await expect(bobConnectedPlayerStats.increaseFarmingStats(bob.address, 40, 40, 40, 40)).to.be.revertedWith(
+        'Not Player Manager'
+      );
     });
 
     it('Should prevent creating a new player if one already exists for address', async () => {

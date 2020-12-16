@@ -105,14 +105,48 @@ contract PlayerStats is AccessControl {
         );
     }
 
+    function getPlayerFarmingStats(address _who) public view returns (
+        uint256 _degeneracy,
+        uint256 _chadary,
+        uint256 _fomostition,
+        uint256 _rugpullable
+    ) {
+        FarmingStats memory stats = playerStats[_who].farmingStats;
+
+        return (
+        stats.degeneracy,
+        stats.chadary,
+        stats.fomostition,
+        stats.rugpullable
+        );
+    }
+
+    function increaseFarmingStats(
+        address _who,
+        uint256 _chadary,
+        uint256 _degeneracy,
+        uint256 _fomostition,
+        uint256 _rugpullable
+    ) onlyPlayerManager existingPlayer(_who) public {
+        playerStats[_who].farmingStats.chadary = playerStats[_who].farmingStats.chadary.add(_chadary);
+        playerStats[_who].farmingStats.degeneracy = playerStats[_who].farmingStats.degeneracy.add(_degeneracy);
+        playerStats[_who].farmingStats.fomostition = playerStats[_who].farmingStats.fomostition.add(_fomostition);
+        playerStats[_who].farmingStats.rugpullable = playerStats[_who].farmingStats.rugpullable.add(_rugpullable);
+    }
+
     modifier onlyNewPlayer(address _who) {
         require(playerStats[_who].isPlayer == false, "Player already exists");
         _;
     }
 
+    modifier existingPlayer(address _who) {
+        require(playerStats[_who].isPlayer, "Player doesn't exist");
+        _;
+    }
+
     modifier onlyPlayerManager() {
         require(hasRole(PLAYER_MANAGER, msg.sender), "Not Player Manager");
-    _;
+        _;
     }
 
     modifier onlyAdmin() {

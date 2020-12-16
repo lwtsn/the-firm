@@ -13,6 +13,7 @@ abstract contract BaseScheme {
 
     address internal randomNumberGenerator;
     address internal cashContract;
+    address internal playerStatsAddress;
 
     constructor(
         uint256 _duration,
@@ -30,6 +31,10 @@ abstract contract BaseScheme {
 
     function setCashContract(address _cashContractAddress) public {
         cashContract = _cashContractAddress;
+    }
+
+    function setPlayerStats(address _playerStatsAddress) public {
+        playerStatsAddress = _playerStatsAddress;
     }
 
     function start(address _who) virtual public {
