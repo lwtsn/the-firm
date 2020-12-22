@@ -1,17 +1,20 @@
-import { expect } from 'chai';
 import { deployContract, deployMockContract, MockContract } from 'ethereum-waffle';
-import { Random, YieldFarm, Cash } from '../../typechain';
+import { Cash, Player, Random, YieldFarm } from '../../typechain';
 import RandomArtifact from '../../artifacts/contracts/utils/Random.sol/Random.json';
 import YieldFarmArtifact from '../../artifacts/contracts/Schemes/YieldFarm.sol/YieldFarm.json';
 import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
+import PlayerArtifact from '../../artifacts/contracts/player/Player.sol/Player.json';
 
 import { getProvider } from '../helpers/contract';
+import { MAX_INT } from '../helpers/numbers';
+import { expect } from 'chai';
 
 const [alice] = getProvider().getWallets();
 
 describe('Schemes', () => {
   let random: Random | MockContract;
   let cash: Cash | MockContract;
+  let player: Player | MockContract;
   let yieldFarm: YieldFarm;
 
   const duration = 3600;
@@ -22,6 +25,7 @@ describe('Schemes', () => {
 
   beforeEach(async () => {
     random = await deployMockContract(alice, RandomArtifact.abi);
+    player = await deployMockContract(alice, PlayerArtifact.abi);
     cash = await deployMockContract(alice, CashArtifact.abi);
 
     yieldFarm = (await deployContract(alice, YieldFarmArtifact, [
@@ -33,6 +37,9 @@ describe('Schemes', () => {
     ])) as YieldFarm;
 
     await yieldFarm.setRandomNumberGenerator(random.address);
+    await yieldFarm.setPlayer(player.address);
+
+    await cash.mock.approve.withArgs(player.address, MAX_INT).returns(true);
     await yieldFarm.setCashContract(cash.address);
   });
 

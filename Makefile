@@ -13,7 +13,7 @@ compile-clean:
 	make compile
 
 test:
-	npm run-script test test/player/PlayerStatsTest.ts
+	npm run-script test
 
 run-node:
 	@npx hardhat node
@@ -38,3 +38,6 @@ balance:
 
 time:
 	npx hardhat --network localhost run integration/helpers/SkipTime.ts
+
+coverage:
+	npx hardhat coverage

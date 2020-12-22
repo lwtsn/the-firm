@@ -2,8 +2,11 @@ pragma solidity ^0.6.0;
 
 import "../utils/Random.sol";
 import "../Cash.sol";
+import "../player/Player.sol";
 
 abstract contract BaseScheme {
+
+    uint constant MAX_UINT = 2 ** 256 - 1;
 
     event SchemeStarted(string name, address who, uint256 when);
 
@@ -13,6 +16,7 @@ abstract contract BaseScheme {
 
     address internal randomNumberGenerator;
     address internal cashContract;
+    address internal playerAddress;
     address internal playerStatsAddress;
 
     constructor(
@@ -31,6 +35,11 @@ abstract contract BaseScheme {
 
     function setCashContract(address _cashContractAddress) public {
         cashContract = _cashContractAddress;
+        Cash(cashContract).approve(playerAddress, MAX_UINT);
+    }
+
+    function setPlayer(address _playerAddress) public {
+        playerAddress = _playerAddress;
     }
 
     function setPlayerStats(address _playerStatsAddress) public {

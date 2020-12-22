@@ -76,7 +76,7 @@ describe('Schemes', () => {
 
       await wait(3600);
 
-      await schemes.completeScheme(1);
+      await schemes.completeScheme();
 
       await schemes.getOngoingScheme(alice.address).then((scheme: any) => {
         expect(scheme._isOngoing).to.eq(false);
@@ -97,13 +97,13 @@ describe('Schemes', () => {
       });
 
       it('Should prevent completing an scheme if one is not in progress', async () => {
-        await expect(schemes.completeScheme(1)).to.be.revertedWith('No scheme in progress');
+        await expect(schemes.completeScheme()).to.be.revertedWith('No scheme in progress');
       });
 
       it('Should prevent completing an scheme before it the duration has passed', async () => {
         await schemes.startScheme(1);
 
-        await expect(schemes.completeScheme(1)).to.be.revertedWith('Scheme is not complete');
+        await expect(schemes.completeScheme()).to.be.revertedWith('Scheme is not complete');
       });
     });
   });

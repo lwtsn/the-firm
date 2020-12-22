@@ -46,11 +46,19 @@ contract Player is AccessControl {
         PlayerStats(playerStats).createBasePlayer(msg.sender);
     }
 
+    // todo move cash stuff to treasury
     function depositCash(uint256 _amount) hasAccount(msg.sender) public {
         require(Cash(cashAddress).balanceOf(msg.sender) >= _amount, "Insufficient funds");
 
         Cash(cashAddress).transferFrom(msg.sender, address(this), _amount);
         balances[msg.sender] = balances[msg.sender].add(_amount);
+    }
+
+    function depositCashTo(address _who, uint256 _amount) hasAccount(_who) public {
+        require(Cash(cashAddress).balanceOf(msg.sender) >= _amount, "Insufficient funds");
+
+        Cash(cashAddress).transferFrom(msg.sender, address(this), _amount);
+        balances[_who] = balances[_who].add(_amount);
     }
 
     function spendCash(address _who, uint256 _amount) public onlyCashSpender {
