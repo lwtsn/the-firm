@@ -11,9 +11,9 @@ contract ItemBase is ERC721, Ownable {
     }
 
     function mint(address _who, uint256 _amount) public {
-        for (uint256 i = 0; i < _amount; i ++) {
+        for (uint256 i = 0; i < _amount; i++) {
             _safeMint(_who, nextItemId);
-            nextItemId ++;
+            nextItemId++;
         }
     }
 

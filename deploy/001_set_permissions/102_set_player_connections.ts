@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
-import { PLAYER, PLAYER_STATS } from './constants';
-import { CASH } from './constants';
+import { PLAYER, PLAYER_STATS } from '../constants';
+import { CASH } from '../constants';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, deployments } = hre;

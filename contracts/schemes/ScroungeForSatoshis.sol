@@ -5,7 +5,7 @@ import "./BaseScheme.sol";
 contract ScroungeForSatochis is BaseScheme {
     // after a long afternoon messaging all your favourite twitter frogs, you manage to collect x coins
     // while trawling through your favourite crypto KOLs you notice an airdrop for a new coin, quickly you fomo in and market sell the drop for x coins
-    // it's been a long day, your fingers hurt from messaging everyone on your twitter feed, still not one penny to show for it
+    // it's been a long day, your fingers hurt from messaging everyone on your twitter feed, still not one statochi to show for it
 
     address cashAddress;
     uint256 baseEarning;
@@ -17,13 +17,8 @@ contract ScroungeForSatochis is BaseScheme {
         uint256 _chanceOfSuccess,
         uint256 _baseEarning,
         uint256 _earningBonus
-    ) BaseScheme(
-        _duration,
-        _experience,
-        _chanceOfSuccess
-    ) public {
+    ) public BaseScheme(_duration, _experience, _chanceOfSuccess) {
         baseEarning = _baseEarning;
         earningBonus = _earningBonus;
     }
-
 }

@@ -42,83 +42,70 @@ contract PlayerStats is AccessControl {
         _setRoleAdmin(PLAYER_MANAGER, ADMIN);
     }
 
-    function setPlayerManager(address _playerManager) onlyAdmin public {
+    function setPlayerManager(address _playerManager) public onlyAdmin {
         grantRole(PLAYER_MANAGER, _playerManager);
     }
 
-    function createBasePlayer(address _who) onlyNewPlayer(_who) onlyPlayerManager public {
-        BattleStats memory battleStats = BattleStats({
-        baseStrength : 20,
-        baseDexterity : 20,
-        baseDefence : 20,
-        baseConstitution : 20
-        });
+    function createBasePlayer(address _who) public onlyNewPlayer(_who) onlyPlayerManager {
+        BattleStats memory battleStats =
+            BattleStats({baseStrength: 20, baseDexterity: 20, baseDefence: 20, baseConstitution: 20});
 
-        FarmingStats memory farmingStats = FarmingStats({
-        degeneracy : 0,
-        chadary : 0,
-        fomostition : 0,
-        rugpullable : 0
-        });
+        FarmingStats memory farmingStats = FarmingStats({degeneracy: 0, chadary: 0, fomostition: 0, rugpullable: 0});
 
         playerStats[_who] = Stats({
-        level : 1,
-        experience : 0,
-        baseHealth : 100,
-        currentHealth : 100,
-        battleStats : battleStats,
-        farmingStats : farmingStats,
-        isPlayer : true
+            level: 1,
+            experience: 0,
+            baseHealth: 100,
+            currentHealth: 100,
+            battleStats: battleStats,
+            farmingStats: farmingStats,
+            isPlayer: true
         });
     }
 
-    function getPlayerStats(address _who) public view returns (
-        uint256 level,
-        uint256 experience,
-        uint256 baseHealth,
-        uint256 currentHealth,
-        bool isPlayer
-    ) {
+    function getPlayerStats(address _who)
+        public
+        view
+        returns (
+            uint256 level,
+            uint256 experience,
+            uint256 baseHealth,
+            uint256 currentHealth,
+            bool isPlayer
+        )
+    {
         Stats memory stats = playerStats[_who];
-        return (
-        stats.level,
-        stats.experience,
-        stats.baseHealth,
-        stats.currentHealth,
-        stats.isPlayer
-        );
+        return (stats.level, stats.experience, stats.baseHealth, stats.currentHealth, stats.isPlayer);
     }
 
-    function getPlayerBattleStats(address _who) public view returns (
-        uint256 baseStrength,
-        uint256 baseDexterity,
-        uint256 baseDefence,
-        uint256 baseConstitution
-    ) {
+    function getPlayerBattleStats(address _who)
+        public
+        view
+        returns (
+            uint256 baseStrength,
+            uint256 baseDexterity,
+            uint256 baseDefence,
+            uint256 baseConstitution
+        )
+    {
         BattleStats memory stats = playerStats[_who].battleStats;
 
-        return (
-        stats.baseStrength,
-        stats.baseDexterity,
-        stats.baseDefence,
-        stats.baseConstitution
-        );
+        return (stats.baseStrength, stats.baseDexterity, stats.baseDefence, stats.baseConstitution);
     }
 
-    function getPlayerFarmingStats(address _who) public view returns (
-        uint256 _degeneracy,
-        uint256 _chadary,
-        uint256 _fomostition,
-        uint256 _rugpullable
-    ) {
+    function getPlayerFarmingStats(address _who)
+        public
+        view
+        returns (
+            uint256 _degeneracy,
+            uint256 _chadary,
+            uint256 _fomostition,
+            uint256 _rugpullable
+        )
+    {
         FarmingStats memory stats = playerStats[_who].farmingStats;
 
-        return (
-        stats.degeneracy,
-        stats.chadary,
-        stats.fomostition,
-        stats.rugpullable
-        );
+        return (stats.degeneracy, stats.chadary, stats.fomostition, stats.rugpullable);
     }
 
     function increaseFarmingStats(
@@ -127,7 +114,7 @@ contract PlayerStats is AccessControl {
         uint256 _degeneracy,
         uint256 _fomostition,
         uint256 _rugpullable
-    ) onlyPlayerManager existingPlayer(_who) public {
+    ) public onlyPlayerManager existingPlayer(_who) {
         playerStats[_who].farmingStats.chadary = playerStats[_who].farmingStats.chadary.add(_chadary);
         playerStats[_who].farmingStats.degeneracy = playerStats[_who].farmingStats.degeneracy.add(_degeneracy);
         playerStats[_who].farmingStats.fomostition = playerStats[_who].farmingStats.fomostition.add(_fomostition);

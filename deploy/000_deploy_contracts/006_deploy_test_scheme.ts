@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
 
-import { SCHEMES } from './constants';
+import { SCHEME_TEST } from '../constants';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
@@ -9,13 +9,20 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts();
 
-  log('Deploying Schemes manager...');
-  await deploy(SCHEMES, {
+  const duration = 10;
+  const experience = 100;
+  const chanceOfSuccess = 50;
+  const baseEarning = 25;
+  const earningBonus = 10;
+
+  log('Deploying Test Scheme...');
+  await deploy(SCHEME_TEST, {
     from: deployer,
     log: true,
+    args: [duration, experience, chanceOfSuccess, baseEarning, earningBonus],
   });
 };
 
 export default func;
 
-func.tags = [SCHEMES];
+func.tags = [SCHEME_TEST];

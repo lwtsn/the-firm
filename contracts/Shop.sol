@@ -22,14 +22,12 @@ contract Shop is Ownable {
         ItemBase(_itemAddress).mint(msg.sender, _amount);
     }
 
-    function getItem(address _itemAddress) view public returns (uint256 price) {
+    function getItem(address _itemAddress) public view returns (uint256 price) {
         return items[_itemAddress].price;
     }
 
-    function list(address _itemAddress, uint256 _price) onlyOwner public {
-        items[_itemAddress] = Item({
-        price : _price
-        });
+    function list(address _itemAddress, uint256 _price) public onlyOwner {
+        items[_itemAddress] = Item({price: _price});
     }
 
     function setPlayerContract(address _playerContractAddress) public {

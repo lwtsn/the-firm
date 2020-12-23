@@ -17,7 +17,7 @@ contract Schemes {
         uint256 timeCompleting;
     }
 
-    uint public nextSchemeId;
+    uint256 public nextSchemeId;
 
     mapping(address => OngoingScheme) internal ongoingSchemes;
     mapping(address => bool) internal hasOngoingScheme;
@@ -29,10 +29,7 @@ contract Schemes {
     }
 
     function addScheme(address _schemeAddress) public {
-        schemes[nextSchemeId] = Scheme({
-        schemeAddress : _schemeAddress,
-        isScheme : true
-        });
+        schemes[nextSchemeId] = Scheme({schemeAddress: _schemeAddress, isScheme: true});
 
         nextSchemeId = nextSchemeId.add(1);
     }
@@ -90,22 +87,26 @@ contract Schemes {
         ongoingSchemes[msg.sender].timeCompleting = 0;
     }
 
-    function getOngoingScheme(address _who) public view returns (
-        bool _isOngoing,
-        uint256 _schemeId,
-        address _schemeAddress,
-        uint256 _timeStarted,
-        uint256 _timeCompleting
-    ) {
+    function getOngoingScheme(address _who)
+        public
+        view
+        returns (
+            bool _isOngoing,
+            uint256 _schemeId,
+            address _schemeAddress,
+            uint256 _timeStarted,
+            uint256 _timeCompleting
+        )
+    {
         if (hasOngoingScheme[_who]) {
             uint256 schemeId = ongoingSchemes[_who].schemeId;
 
             return (
-            true,
-            schemeId,
-            schemes[schemeId].schemeAddress,
-            ongoingSchemes[_who].timeStarted,
-            ongoingSchemes[_who].timeCompleting
+                true,
+                schemeId,
+                schemes[schemeId].schemeAddress,
+                ongoingSchemes[_who].timeStarted,
+                ongoingSchemes[_who].timeCompleting
             );
         }
         return (false, 0, address(0), 0, 0);

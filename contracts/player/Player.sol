@@ -25,15 +25,15 @@ contract Player is AccessControl {
         _setRoleAdmin(CASH_SPENDER, ADMIN);
     }
 
-    function setCashAddress(address _cashAddress) onlyAdmin public {
+    function setCashAddress(address _cashAddress) public onlyAdmin {
         cashAddress = _cashAddress;
     }
 
-    function setPlayerStatsAddress(address _playerStats) onlyAdmin public {
+    function setPlayerStatsAddress(address _playerStats) public onlyAdmin {
         playerStats = _playerStats;
     }
 
-    function setCashSpender(address _who) onlyAdmin public {
+    function setCashSpender(address _who) public onlyAdmin {
         grantRole(CASH_SPENDER, _who);
     }
 
@@ -47,14 +47,14 @@ contract Player is AccessControl {
     }
 
     // todo move cash stuff to treasury
-    function depositCash(uint256 _amount) hasAccount(msg.sender) public {
+    function depositCash(uint256 _amount) public hasAccount(msg.sender) {
         require(Cash(cashAddress).balanceOf(msg.sender) >= _amount, "Insufficient funds");
 
         Cash(cashAddress).transferFrom(msg.sender, address(this), _amount);
         balances[msg.sender] = balances[msg.sender].add(_amount);
     }
 
-    function depositCashTo(address _who, uint256 _amount) hasAccount(_who) public {
+    function depositCashTo(address _who, uint256 _amount) public hasAccount(_who) {
         require(Cash(cashAddress).balanceOf(msg.sender) >= _amount, "Insufficient funds");
 
         Cash(cashAddress).transferFrom(msg.sender, address(this), _amount);

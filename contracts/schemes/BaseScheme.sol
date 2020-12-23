@@ -5,8 +5,7 @@ import "../Cash.sol";
 import "../player/Player.sol";
 
 abstract contract BaseScheme {
-
-    uint constant MAX_UINT = 2 ** 256 - 1;
+    uint256 constant MAX_UINT = 2**256 - 1;
 
     event SchemeStarted(string name, address who, uint256 when);
 
@@ -46,13 +45,13 @@ abstract contract BaseScheme {
         playerStatsAddress = _playerStatsAddress;
     }
 
-    function start(address _who) virtual public {
+    function start(address _who) public virtual {
         emit SchemeStarted(getSchemeName(), _who, block.timestamp);
     }
 
-    function complete(address _who) onlySchemeManager virtual public {}
+    function complete(address _who) public virtual onlySchemeManager {}
 
-    function getSchemeName() virtual pure internal returns (string memory) {
+    function getSchemeName() internal pure virtual returns (string memory) {
         return "";
     }
 
@@ -60,8 +59,19 @@ abstract contract BaseScheme {
         return Random(randomNumberGenerator).random(100);
     }
 
+    function increaseStats(
+        address _who,
+        uint256 _chadary,
+        uint256 _degeneracy,
+        uint256 _fomostition,
+        uint256 _rugpullable
+    ) internal {
+        PlayerStats(playerStatsAddress).increaseFarmingStats(_who, _chadary, _degeneracy, _fomostition, _rugpullable);
+    }
+
     function mint(address _who, uint256 _amount) internal {
-        Cash(cashContract).mint(_who, _amount);
+        Cash(cashContract).mint(address(this), _amount);
+        Player(playerAddress).depositCashTo(_who, _amount);
     }
 
     function getScheme() public view returns (uint256 _duration, string memory _name) {
