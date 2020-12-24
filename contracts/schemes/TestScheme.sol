@@ -23,9 +23,10 @@ contract TestScheme is BaseScheme {
 
     function complete(address _who) public override {
         mint(_who, 33);
+        increaseStats(_who, 20, 20, 20, 20);
     }
 
     function getSchemeName() internal pure override returns (string memory) {
-        return "Yield farm";
+        return "TEST SCHEME";
     }
 }
