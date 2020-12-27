@@ -20,9 +20,8 @@ describe('Training', () => {
   it('Should allow training to be started', async () => {
     await training.start(1, 0);
 
-    await training.trainingMapping(alice.address).then(async (training: any) => {
-      const blockTime = await getBlockTime();
-
+    const blockTime = await getBlockTime();
+    await training.callStatic.trainingMapping(alice.address).then(async (training: any) => {
       expect(training.stat).to.eq(1);
       expect(training.startTime).to.eq(blockTime);
       expect(training.stopTime).to.eq(blockTime + 3600);
