@@ -44,7 +44,7 @@ contract Training is Ownable {
         trainingMapping[msg.sender].isTraining = true;
     }
 
-    function finish() public isTraining {
+    function finish() public isTraining trainingFinished {
         if (Stat.STRENGTH == trainingMapping[msg.sender].stat) {
             (uint256 strength, , ,) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
 
@@ -150,6 +150,11 @@ contract Training is Ownable {
 
     modifier isTraining {
         require(trainingMapping[msg.sender].isTraining, "Training in not progress");
+        _;
+    }
+
+    modifier trainingFinished {
+        require(block.timestamp >= trainingMapping[msg.sender].stopTime, "Training has not finished");
         _;
     }
 
