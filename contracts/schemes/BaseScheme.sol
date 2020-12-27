@@ -2,6 +2,7 @@ pragma solidity ^0.6.0;
 
 import "../utils/Random.sol";
 import "../Cash.sol";
+import "../player/Treasury.sol";
 import "../player/Player.sol";
 
 abstract contract BaseScheme {
@@ -15,7 +16,7 @@ abstract contract BaseScheme {
 
     address internal randomNumberGenerator;
     address internal cashContract;
-    address internal playerAddress;
+    address internal treasuryAddress;
     address internal playerStatsAddress;
 
     constructor(
@@ -34,11 +35,11 @@ abstract contract BaseScheme {
 
     function setCashContract(address _cashContractAddress) public {
         cashContract = _cashContractAddress;
-        Cash(cashContract).approve(playerAddress, MAX_UINT);
+        Cash(cashContract).approve(treasuryAddress, MAX_UINT);
     }
 
-    function setPlayer(address _playerAddress) public {
-        playerAddress = _playerAddress;
+    function setTreasury(address _treasuryAddress) public {
+        treasuryAddress = _treasuryAddress;
     }
 
     function setPlayerStats(address _playerStatsAddress) public {
@@ -71,7 +72,7 @@ abstract contract BaseScheme {
 
     function mint(address _who, uint256 _amount) internal {
         Cash(cashContract).mint(address(this), _amount);
-        Player(playerAddress).depositCashTo(_who, _amount);
+        Treasury(treasuryAddress).depositCashTo(_who, _amount);
     }
 
     function getScheme() public view returns (uint256 _duration, string memory _name) {

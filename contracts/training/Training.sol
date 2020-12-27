@@ -35,7 +35,7 @@ contract Training is Ownable {
     function start(Stat _stat, Duration _duration) public notTraining {
         require(Stat.NONE != _stat, "This is not a real stat");
 
-        (uint256 duration,) = getDurationAndMultiplier(_duration);
+        (uint256 duration, ) = getDurationAndMultiplier(_duration);
 
         trainingMapping[msg.sender].stat = _stat;
         trainingMapping[msg.sender].startTime = block.timestamp;
@@ -46,7 +46,7 @@ contract Training is Ownable {
 
     function finish() public isTraining trainingFinished {
         if (Stat.STRENGTH == trainingMapping[msg.sender].stat) {
-            (uint256 strength, , ,) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
+            (uint256 strength, , , ) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
 
             PlayerStats(playerStatsAddress).increaseBattleStats(
                 msg.sender,
@@ -58,7 +58,7 @@ contract Training is Ownable {
         }
 
         if (Stat.DEXTERITY == trainingMapping[msg.sender].stat) {
-            (, uint256 dexterity, ,) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
+            (, uint256 dexterity, , ) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
 
             PlayerStats(playerStatsAddress).increaseBattleStats(
                 msg.sender,
@@ -70,7 +70,7 @@ contract Training is Ownable {
         }
 
         if (Stat.DEFENCE == trainingMapping[msg.sender].stat) {
-            (, , uint256 defence,) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
+            (, , uint256 defence, ) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
 
             PlayerStats(playerStatsAddress).increaseBattleStats(
                 msg.sender,

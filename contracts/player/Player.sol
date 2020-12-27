@@ -5,81 +5,35 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
-import "../Cash.sol";
 import "./PlayerStats.sol";
 
 contract Player is AccessControl {
     using SafeMath for uint256;
 
     mapping(address => bool) private accounts;
-    mapping(address => uint256) private balances;
 
-    address private cashAddress;
     address private playerStats;
 
     bytes32 public constant ADMIN = keccak256("ADMIN");
-    bytes32 public constant CASH_SPENDER = keccak256("CASH_SPENDER");
 
     constructor() public {
         _setupRole(ADMIN, msg.sender);
-        _setRoleAdmin(CASH_SPENDER, ADMIN);
-    }
-
-    function setCashAddress(address _cashAddress) public onlyAdmin {
-        cashAddress = _cashAddress;
     }
 
     function setPlayerStatsAddress(address _playerStats) public onlyAdmin {
         playerStats = _playerStats;
     }
 
-    function setCashSpender(address _who) public onlyAdmin {
-        grantRole(CASH_SPENDER, _who);
-    }
-
     function create() public {
         require(isPlayer(msg.sender) == false, "Account already exists");
 
         accounts[msg.sender] = true;
-        balances[msg.sender] = 0;
 
         PlayerStats(playerStats).createBasePlayer(msg.sender);
     }
 
-    // todo move cash stuff to treasury
-    function depositCash(uint256 _amount) public hasAccount(msg.sender) {
-        require(Cash(cashAddress).balanceOf(msg.sender) >= _amount, "Insufficient funds");
-
-        Cash(cashAddress).transferFrom(msg.sender, address(this), _amount);
-        balances[msg.sender] = balances[msg.sender].add(_amount);
-    }
-
-    function depositCashTo(address _who, uint256 _amount) public hasAccount(_who) {
-        require(Cash(cashAddress).balanceOf(msg.sender) >= _amount, "Insufficient funds");
-
-        Cash(cashAddress).transferFrom(msg.sender, address(this), _amount);
-        balances[_who] = balances[_who].add(_amount);
-    }
-
-    function spendCash(address _who, uint256 _amount) public onlyCashSpender {
-        require(balances[_who] >= _amount);
-
-        balances[_who] = balances[_who].sub(_amount);
-
-        Cash(cashAddress).burn(_amount);
-    }
-
     function isPlayer(address _who) public view returns (bool) {
         return accounts[_who];
-    }
-
-    function getBalance(address _who) public view returns (uint256) {
-        return balances[_who];
-    }
-
-    modifier hasAccount(address _who) {
-        require(isPlayer(_who), "Account does not exist");
-        _;
     }
 
     modifier onlyAdmin() {
@@ -87,8 +41,8 @@ contract Player is AccessControl {
         _;
     }
 
-    modifier onlyCashSpender() {
-        require(hasRole(CASH_SPENDER, msg.sender), "Not Cash Spender");
+    modifier hasAccount(address _who) {
+        require(isPlayer(_who), "Account does not exist");
         _;
     }
 }

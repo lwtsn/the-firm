@@ -2,7 +2,7 @@ pragma solidity ^0.6.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./item/ItemBase.sol";
-import "./player/Player.sol";
+import "./player/Treasury.sol";
 
 contract Shop is Ownable {
     struct Item {
@@ -11,11 +11,11 @@ contract Shop is Ownable {
 
     mapping(address => Item) internal items;
 
-    address playerContract;
+    address treasuryContract;
 
     function purchase(address _itemAddress, uint256 _amount) public {
         Item memory itemListing = items[_itemAddress];
-        uint256 balance = Player(playerContract).getBalance(msg.sender);
+        uint256 balance = Treasury(treasuryContract).getBalance(msg.sender);
 
         require(balance >= itemListing.price, "Not enough funds");
 
@@ -30,7 +30,7 @@ contract Shop is Ownable {
         items[_itemAddress] = Item({price: _price});
     }
 
-    function setPlayerContract(address _playerContractAddress) public {
-        playerContract = _playerContractAddress;
+    function setPlayerContract(address _treasuryContractAddress) public {
+        treasuryContract = _treasuryContractAddress;
     }
 }
