@@ -121,6 +121,21 @@ contract PlayerStats is AccessControl {
         playerStats[_who].farmingStats.rugpullable = playerStats[_who].farmingStats.rugpullable.add(_rugpullable);
     }
 
+    function increaseBattleStats(
+        address _who,
+        uint256 _strength,
+        uint256 _dexterity,
+        uint256 _defence,
+        uint256 _constitution
+    ) public onlyPlayerManager existingPlayer(_who) {
+        playerStats[_who].battleStats.baseStrength = playerStats[_who].battleStats.baseStrength.add(_strength);
+        playerStats[_who].battleStats.baseDexterity = playerStats[_who].battleStats.baseDexterity.add(_dexterity);
+        playerStats[_who].battleStats.baseDefence = playerStats[_who].battleStats.baseDefence.add(_defence);
+        playerStats[_who].battleStats.baseConstitution = playerStats[_who].battleStats.baseConstitution.add(
+            _constitution
+        );
+    }
+
     modifier onlyNewPlayer(address _who) {
         require(playerStats[_who].isPlayer == false, "Player already exists");
         _;

@@ -11,7 +11,7 @@ import { expect } from 'chai';
 
 const [alice] = getProvider().getWallets();
 
-describe('Schemes', () => {
+describe('Yield farm', () => {
   let random: Random | MockContract;
   let cash: Cash | MockContract;
   let player: Player | MockContract;
@@ -52,7 +52,8 @@ describe('Schemes', () => {
 
   it('Should reward an amount of Cash when successful', async () => {
     await random.mock.random.withArgs(100).returns(49);
-    await cash.mock.mint.withArgs(alice.address, 33).returns();
+    await cash.mock.mint.withArgs(yieldFarm.address, 33).returns();
+    await player.mock.depositCashTo.withArgs(alice.address, 33).returns();
 
     await yieldFarm.complete(alice.address);
   });
