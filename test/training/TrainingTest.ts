@@ -11,30 +11,26 @@ describe('Training', () => {
   let training: Training;
   let playerStats: PlayerStats | MockContract;
 
-  beforeEach(async () => {
+  before(async () => {
     playerStats = await deployMockContract(alice, PlayerStatsArtifact.abi);
     training = await deployTrainingContract(alice);
     await training.setPlayerStats(playerStats.address);
+
+    await playerStats.mock.getPlayerBattleStats
+      .withArgs(alice.address)
+      .returns(oneEther.mul(20), oneEther.mul(20), oneEther.mul(20), oneEther.mul(20));
   });
 
-  it('Should allow training to be started', async () => {
+  it('Should allow training to be started and finished', async () => {
     await training.start(1, 0);
 
-    const blockTime = await getBlockTime();
     await training.callStatic.trainingMapping(alice.address).then(async (training: any) => {
+      const blockTime = await getBlockTime();
       expect(training.stat).to.eq(1);
       expect(training.startTime).to.eq(blockTime);
       expect(training.stopTime).to.eq(blockTime + 3600);
       expect(training.isTraining).to.eq(true);
     });
-  });
-
-  it('Should allow training to be stopped when finished', async () => {
-    await training.start(1, 0);
-
-    await playerStats.mock.getPlayerBattleStats
-      .withArgs(alice.address)
-      .returns(oneEther.mul(20), oneEther.mul(20), oneEther.mul(20), oneEther.mul(20));
 
     await playerStats.mock.increaseBattleStats.withArgs(alice.address, '6000000000000000', 0, 0, 0).returns();
 
@@ -45,6 +41,52 @@ describe('Training', () => {
       expect(training.startTime).to.eq(0);
       expect(training.stopTime).to.eq(0);
       expect(training.isTraining).to.eq(false);
+    });
+  });
+
+  describe('Training skills', () => {
+    afterEach(async () => {
+      await training.finish();
+    });
+
+    it('Training Strength for 2 hours', async () => {
+      await training.start(1, 1);
+      await playerStats.mock.increaseBattleStats.withArgs(alice.address, '12000000000000000', 0, 0, 0).returns();
+    });
+
+    it('Training Dexterity for 4 hours', async () => {
+      await training.start(2, 2);
+      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, '24480000000000000', 0, 0).returns();
+    });
+
+    it('Training Defence for 8 hours', async () => {
+      await training.start(3, 3);
+      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, 0, '49920000000000000', 0).returns();
+    });
+
+    it('Training Constitution for 12 hours', async () => {
+      await training.start(4, 4);
+      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, 0, 0, '76320000000000000').returns();
+    });
+
+    it('Training Strength for 1 day', async () => {
+      await training.start(1, 5);
+      await playerStats.mock.increaseBattleStats.withArgs(alice.address, '155520000000000000', 0, 0, 0).returns();
+    });
+
+    it('Training Dexterity for 2 days', async () => {
+      await training.start(2, 6);
+      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, '316800000000000000', 0, 0).returns();
+    });
+
+    it('Training Defence for 4 days', async () => {
+      await training.start(3, 7);
+      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, 0, '691200000000000000', 0).returns();
+    });
+
+    it('Training Constitution for 1 week', async () => {
+      await training.start(4, 8);
+      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, 0, 0, '1260000000000000000').returns();
     });
   });
 });

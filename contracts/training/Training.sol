@@ -133,16 +133,16 @@ contract Training is Ownable {
             return (12 hours, 106);
         }
         if (Duration.ONE_DAY == _duration) {
-            return (1 days, 108);
+            return (24 hours, 108);
         }
         if (Duration.TWO_DAYS == _duration) {
-            return (2 days, 110);
+            return (48 hours, 110);
         }
         if (Duration.FOUR_DAYS == _duration) {
-            return (4 days, 120);
+            return (96 hours, 120);
         }
         if (Duration.ONE_WEEK == _duration) {
-            return (1 weeks, 125);
+            return (168 hours, 125);
         }
 
         revert("Invalid duration");
