@@ -49,10 +49,6 @@ contract Treasury is AccessControl {
         Cash(cashAddress).burn(_amount);
     }
 
-    function getBalance(address _who) public view returns (uint256) {
-        return balances[_who];
-    }
-
     modifier onlyAdmin() {
         require(hasRole(ADMIN, msg.sender), "Not Admin");
         _;

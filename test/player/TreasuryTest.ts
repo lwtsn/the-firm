@@ -37,7 +37,7 @@ describe('Treasury', () => {
 
       await treasury.depositCash(oneEther.mul(100));
 
-      await treasury.getBalance(alice.address).then((balance: BigNumber) => {
+      await treasury.balances(alice.address).then((balance: BigNumber) => {
         expect(balance).to.eq(oneEther.mul(100));
       });
     });
@@ -51,7 +51,7 @@ describe('Treasury', () => {
 
       await treasury.spendCash(alice.address, oneEther.mul(50));
 
-      await treasury.getBalance(alice.address).then((balance: BigNumber) => {
+      await treasury.balances(alice.address).then((balance: BigNumber) => {
         expect(balance).to.eq(oneEther.mul(50));
       });
     });
@@ -68,7 +68,7 @@ describe('Treasury', () => {
 
         await expect(treasury.depositCash(oneEther.mul(100))).to.be.revertedWith('Insufficient funds');
 
-        await treasury.getBalance(alice.address).then((balance: BigNumber) => {
+        await treasury.balances(alice.address).then((balance: BigNumber) => {
           expect(balance).to.eq(0);
         });
       });
