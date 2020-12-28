@@ -26,8 +26,8 @@ describe('Shop', () => {
   it('Should allow listing of items', async () => {
     await shop.list(item.address, oneEther.mul(100));
 
-    await shop.getItem(item.address).then((price: BigNumber) => {
-      expect(price).to.eq(oneEther.mul(100));
+    await shop.itemStructs(item.address).then((item: any) => {
+      expect(item.price).to.eq(oneEther.mul(100));
     });
   });
 
