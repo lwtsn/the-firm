@@ -22,22 +22,22 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/23</span>
+        <span class='fraction'>0/8</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/14</span>
+        <span class='fraction'>0/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/13</span>
+        <span class='fraction'>0/6</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/26</span>
+        <span class='fraction'>0/10</span>
       </div>
     </div>
   </div>
@@ -91,57 +91,7 @@
 46
 47
 48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+49</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -161,42 +111,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -209,15 +126,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -238,81 +146,35 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 &nbsp;
-import "../Cash.sol";
 import "./PlayerStats.sol";
 &nbsp;
 contract Player is AccessControl {
     using SafeMath for uint256;
 &nbsp;
     mapping(address =&gt; bool) private accounts;
-    mapping(address =&gt; uint256) private balances;
 &nbsp;
-    address private cashAddress;
     address private playerStats;
 &nbsp;
     bytes32 public constant ADMIN = keccak256("ADMIN");
-    bytes32 public constant CASH_SPENDER = keccak256("CASH_SPENDER");
 &nbsp;
 <span class="fstat-no" title="function not covered" >    constructor() public {</span>
 <span class="cstat-no" title="statement not covered" >        _setupRole(ADMIN, msg.sender)</span>;
-<span class="cstat-no" title="statement not covered" >        _setRoleAdmin(CASH_SPENDER, ADMIN)</span>;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function setCashAddress(address _cashAddress) onlyAdmin public {</span>
-<span class="cstat-no" title="statement not covered" >        cashAddress = _cashAddress</span>;
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    function setPlayerStatsAddress(address _playerStats) onlyAdmin public {</span>
+<span class="fstat-no" title="function not covered" >    function setPlayerStatsAddress(address _playerStats) public onlyAdmin {</span>
 <span class="cstat-no" title="statement not covered" >        playerStats = _playerStats</span>;
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    function setCashSpender(address _who) onlyAdmin public {</span>
-<span class="cstat-no" title="statement not covered" >        grantRole(CASH_SPENDER, _who)</span>;
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function create() public {</span>
 <span class="cstat-no" title="statement not covered" >        require(isPlayer(msg.sender) == false, "Account already exists")</span>;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        accounts[msg.sender] = true</span>;
-<span class="cstat-no" title="statement not covered" >        balances[msg.sender] = 0</span>;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        PlayerStats(playerStats).createBasePlayer(msg.sender)</span>;
     }
 &nbsp;
-    // todo move cash stuff to treasury
-<span class="fstat-no" title="function not covered" >    function depositCash(uint256 _amount) hasAccount(msg.sender) public {</span>
-<span class="cstat-no" title="statement not covered" >        require(Cash(cashAddress).balanceOf(msg.sender) &gt;= _amount, "Insufficient funds")</span>;
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        Cash(cashAddress).transferFrom(msg.sender, address(this), _amount)</span>;
-<span class="cstat-no" title="statement not covered" >        balances[msg.sender] = balances[msg.sender].add(_amount)</span>;
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    function depositCashTo(address _who, uint256 _amount) hasAccount(_who) public {</span>
-<span class="cstat-no" title="statement not covered" >        require(Cash(cashAddress).balanceOf(msg.sender) &gt;= _amount, "Insufficient funds")</span>;
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        Cash(cashAddress).transferFrom(msg.sender, address(this), _amount)</span>;
-<span class="cstat-no" title="statement not covered" >        balances[_who] = balances[_who].add(_amount)</span>;
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    function spendCash(address _who, uint256 _amount) public onlyCashSpender {</span>
-<span class="cstat-no" title="statement not covered" >        require(balances[_who] &gt;= _amount)</span>;
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        balances[_who] = balances[_who].sub(_amount)</span>;
-&nbsp;
-<span class="cstat-no" title="statement not covered" >        Cash(cashAddress).burn(_amount)</span>;
-    }
-&nbsp;
 <span class="fstat-no" title="function not covered" >    function isPlayer(address _who) public view returns (bool) {</span>
 <span class="cstat-no" title="statement not covered" >        return accounts[_who];</span>
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    function getBalance(address _who) public view returns (uint256) {</span>
-<span class="cstat-no" title="statement not covered" >        return balances[_who];</span>
-    }
-&nbsp;
-<span class="fstat-no" title="function not covered" >    modifier hasAccount(address _who) {</span>
-<span class="cstat-no" title="statement not covered" >        require(isPlayer(_who), "Account does not exist")</span>;
-        _;
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    modifier onlyAdmin() {</span>
@@ -320,8 +182,8 @@ contract Player is AccessControl {
         _;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    modifier onlyCashSpender() {</span>
-<span class="cstat-no" title="statement not covered" >        require(hasRole(CASH_SPENDER, msg.sender), "Not Cash Spender")</span>;
+<span class="fstat-no" title="function not covered" >    modifier hasAccount(address _who) {</span>
+<span class="cstat-no" title="statement not covered" >        require(isPlayer(_who), "Account does not exist")</span>;
         _;
     }
 }
@@ -331,7 +193,7 @@ contract Player is AccessControl {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 22 2020 19:59:01 GMT+0000 (Greenwich Mean Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 28 2020 13:27:39 GMT+0000 (Greenwich Mean Time)
 </div>
 </div>
 <script src="../../prettify.js"></script>

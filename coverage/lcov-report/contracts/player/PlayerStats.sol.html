@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/20</span>
+        <span class='fraction'>0/24</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/11</span>
+        <span class='fraction'>0/12</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/24</span>
+        <span class='fraction'>0/28</span>
       </div>
     </div>
   </div>
@@ -199,7 +199,9 @@
 154
 155
 156
-157</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+157
+158
+159</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -251,18 +253,13 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -294,8 +291,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -311,15 +306,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -333,6 +322,21 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -399,83 +403,70 @@ contract PlayerStats is AccessControl {
 <span class="cstat-no" title="statement not covered" >        _setRoleAdmin(PLAYER_MANAGER, ADMIN)</span>;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function setPlayerManager(address _playerManager) onlyAdmin public {</span>
+<span class="fstat-no" title="function not covered" >    function setPlayerManager(address _playerManager) public onlyAdmin {</span>
 <span class="cstat-no" title="statement not covered" >        grantRole(PLAYER_MANAGER, _playerManager)</span>;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function createBasePlayer(address _who) onlyNewPlayer(_who) onlyPlayerManager public {</span>
-<span class="cstat-no" title="statement not covered" >        BattleStats memory battleStats = BattleStats({</span>
-        baseStrength : 20,
-        baseDexterity : 20,
-        baseDefence : 20,
-        baseConstitution : 20
-        });
+<span class="fstat-no" title="function not covered" >    function createBasePlayer(address _who) public onlyNewPlayer(_who) onlyPlayerManager {</span>
+<span class="cstat-no" title="statement not covered" >        BattleStats memory battleStats =</span>
+            BattleStats({baseStrength: 20, baseDexterity: 20, baseDefence: 20, baseConstitution: 20});
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        FarmingStats memory farmingStats = FarmingStats({</span>
-        degeneracy : 0,
-        chadary : 0,
-        fomostition : 0,
-        rugpullable : 0
-        });
+<span class="cstat-no" title="statement not covered" >        FarmingStats memory farmingStats = FarmingStats({degeneracy: 0, chadary: 0, fomostition: 0, rugpullable: 0});</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who] = Stats({</span>
-        level : 1,
-        experience : 0,
-        baseHealth : 100,
-        currentHealth : 100,
-        battleStats : battleStats,
-        farmingStats : farmingStats,
-        isPlayer : true
+            level: 1,
+            experience: 0,
+            baseHealth: 100,
+            currentHealth: 100,
+            battleStats: battleStats,
+            farmingStats: farmingStats,
+            isPlayer: true
         });
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getPlayerStats(address _who) public view returns (</span>
-        uint256 level,
-        uint256 experience,
-        uint256 baseHealth,
-        uint256 currentHealth,
-        bool isPlayer
-    ) {
+<span class="fstat-no" title="function not covered" >    function getPlayerStats(address _who)</span>
+        public
+        view
+        returns (
+            uint256 level,
+            uint256 experience,
+            uint256 baseHealth,
+            uint256 currentHealth,
+            bool isPlayer
+        )
+    {
 <span class="cstat-no" title="statement not covered" >        Stats memory stats = playerStats[_who];</span>
-<span class="cstat-no" title="statement not covered" >        return (</span>
-        stats.level,
-        stats.experience,
-        stats.baseHealth,
-        stats.currentHealth,
-        stats.isPlayer
-        );
+<span class="cstat-no" title="statement not covered" >        return (stats.level, stats.experience, stats.baseHealth, stats.currentHealth, stats.isPlayer);</span>
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getPlayerBattleStats(address _who) public view returns (</span>
-        uint256 baseStrength,
-        uint256 baseDexterity,
-        uint256 baseDefence,
-        uint256 baseConstitution
-    ) {
+<span class="fstat-no" title="function not covered" >    function getPlayerBattleStats(address _who)</span>
+        public
+        view
+        returns (
+            uint256 baseStrength,
+            uint256 baseDexterity,
+            uint256 baseDefence,
+            uint256 baseConstitution
+        )
+    {
 <span class="cstat-no" title="statement not covered" >        BattleStats memory stats = playerStats[_who].battleStats;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return (</span>
-        stats.baseStrength,
-        stats.baseDexterity,
-        stats.baseDefence,
-        stats.baseConstitution
-        );
+<span class="cstat-no" title="statement not covered" >        return (stats.baseStrength, stats.baseDexterity, stats.baseDefence, stats.baseConstitution);</span>
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getPlayerFarmingStats(address _who) public view returns (</span>
-        uint256 _degeneracy,
-        uint256 _chadary,
-        uint256 _fomostition,
-        uint256 _rugpullable
-    ) {
+<span class="fstat-no" title="function not covered" >    function getPlayerFarmingStats(address _who)</span>
+        public
+        view
+        returns (
+            uint256 _degeneracy,
+            uint256 _chadary,
+            uint256 _fomostition,
+            uint256 _rugpullable
+        )
+    {
 <span class="cstat-no" title="statement not covered" >        FarmingStats memory stats = playerStats[_who].farmingStats;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        return (</span>
-        stats.degeneracy,
-        stats.chadary,
-        stats.fomostition,
-        stats.rugpullable
-        );
+<span class="cstat-no" title="statement not covered" >        return (stats.degeneracy, stats.chadary, stats.fomostition, stats.rugpullable);</span>
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function increaseFarmingStats(</span>
@@ -484,11 +475,26 @@ contract PlayerStats is AccessControl {
         uint256 _degeneracy,
         uint256 _fomostition,
         uint256 _rugpullable
-    ) onlyPlayerManager existingPlayer(_who) public {
+    ) public onlyPlayerManager existingPlayer(_who) {
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].farmingStats.chadary = playerStats[_who].farmingStats.chadary.add(_chadary)</span>;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].farmingStats.degeneracy = playerStats[_who].farmingStats.degeneracy.add(_degeneracy)</span>;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].farmingStats.fomostition = playerStats[_who].farmingStats.fomostition.add(_fomostition)</span>;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].farmingStats.rugpullable = playerStats[_who].farmingStats.rugpullable.add(_rugpullable)</span>;
+    }
+&nbsp;
+<span class="fstat-no" title="function not covered" >    function increaseBattleStats(</span>
+        address _who,
+        uint256 _strength,
+        uint256 _dexterity,
+        uint256 _defence,
+        uint256 _constitution
+    ) public onlyPlayerManager existingPlayer(_who) {
+<span class="cstat-no" title="statement not covered" >        playerStats[_who].battleStats.baseStrength = playerStats[_who].battleStats.baseStrength.add(_strength)</span>;
+<span class="cstat-no" title="statement not covered" >        playerStats[_who].battleStats.baseDexterity = playerStats[_who].battleStats.baseDexterity.add(_dexterity)</span>;
+<span class="cstat-no" title="statement not covered" >        playerStats[_who].battleStats.baseDefence = playerStats[_who].battleStats.baseDefence.add(_defence)</span>;
+<span class="cstat-no" title="statement not covered" >        playerStats[_who].battleStats.baseConstitution = playerStats[_who].battleStats.baseConstitution.add(</span>
+            _constitution
+        );
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    modifier onlyNewPlayer(address _who) {</span>
@@ -517,7 +523,7 @@ contract PlayerStats is AccessControl {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 22 2020 19:59:01 GMT+0000 (Greenwich Mean Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 28 2020 13:27:39 GMT+0000 (Greenwich Mean Time)
 </div>
 </div>
 <script src="../../prettify.js"></script>

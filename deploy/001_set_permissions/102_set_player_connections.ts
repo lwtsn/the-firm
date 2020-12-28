@@ -14,9 +14,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   console.log('Setting setting player stats address: ' + playerStats.address);
   await execute(PLAYER, { from: deployer, log: true }, 'setPlayerStatsAddress', playerStats.address);
-
-  console.log('Setting setting cash address: ' + playerStats.address);
-  await execute(PLAYER, { from: deployer, log: true }, 'setCashAddress', cash.address);
 };
 
 export default func;

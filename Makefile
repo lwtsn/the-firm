@@ -13,7 +13,7 @@ compile-clean:
 	make compile
 
 test:
-	npm run-script test
+	npm run-script test test/item/weapon/WeaponTest.ts
 
 run-node:
 	@npx hardhat node

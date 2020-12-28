@@ -162,4 +162,56 @@ contract Training is Ownable {
         require(false == trainingMapping[msg.sender].isTraining, "Training in progress");
         _;
     }
+
+    function skipFinish() public isTraining {
+        if (Stat.STRENGTH == trainingMapping[msg.sender].stat) {
+            (uint256 strength, , , ) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
+
+            PlayerStats(playerStatsAddress).increaseBattleStats(
+                msg.sender,
+                calculateStatIncrease(strength, trainingMapping[msg.sender].duration),
+                0,
+                0,
+                0
+            );
+        }
+
+        if (Stat.DEXTERITY == trainingMapping[msg.sender].stat) {
+            (, uint256 dexterity, , ) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
+
+            PlayerStats(playerStatsAddress).increaseBattleStats(
+                msg.sender,
+                0,
+                calculateStatIncrease(dexterity, trainingMapping[msg.sender].duration),
+                0,
+                0
+            );
+        }
+
+        if (Stat.DEFENCE == trainingMapping[msg.sender].stat) {
+            (, , uint256 defence, ) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
+
+            PlayerStats(playerStatsAddress).increaseBattleStats(
+                msg.sender,
+                0,
+                0,
+                calculateStatIncrease(defence, trainingMapping[msg.sender].duration),
+                0
+            );
+        }
+
+        if (Stat.CONSTITUTION == trainingMapping[msg.sender].stat) {
+            (, , , uint256 constitution) = PlayerStats(playerStatsAddress).getPlayerBattleStats(msg.sender);
+
+            PlayerStats(playerStatsAddress).increaseBattleStats(
+                msg.sender,
+                0,
+                0,
+                0,
+                calculateStatIncrease(constitution, trainingMapping[msg.sender].duration)
+            );
+        }
+
+        resetTraining(msg.sender);
+    }
 }

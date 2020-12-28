@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/14</span>
+        <span class='fraction'>0/16</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/12</span>
+        <span class='fraction'>0/13</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/15</span>
+        <span class='fraction'>0/17</span>
       </div>
     </div>
   </div>
@@ -118,7 +118,18 @@
 73
 74
 75
-76</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -181,6 +192,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,11 +219,11 @@
 &nbsp;
 import "../utils/Random.sol";
 import "../Cash.sol";
+import "../player/Treasury.sol";
 import "../player/Player.sol";
 &nbsp;
 abstract contract BaseScheme {
-&nbsp;
-    uint constant MAX_UINT = 2 ** 256 - 1;
+    uint256 constant MAX_UINT = 2**256 - 1;
 &nbsp;
     event SchemeStarted(string name, address who, uint256 when);
 &nbsp;
@@ -211,7 +233,7 @@ abstract contract BaseScheme {
 &nbsp;
     address internal randomNumberGenerator;
     address internal cashContract;
-    address internal playerAddress;
+    address internal treasuryAddress;
     address internal playerStatsAddress;
 &nbsp;
 <span class="fstat-no" title="function not covered" >    constructor(</span>
@@ -230,24 +252,24 @@ abstract contract BaseScheme {
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function setCashContract(address _cashContractAddress) public {</span>
 <span class="cstat-no" title="statement not covered" >        cashContract = _cashContractAddress</span>;
-<span class="cstat-no" title="statement not covered" >        Cash(cashContract).approve(playerAddress, MAX_UINT)</span>;
+<span class="cstat-no" title="statement not covered" >        Cash(cashContract).approve(treasuryAddress, MAX_UINT)</span>;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function setPlayer(address _playerAddress) public {</span>
-<span class="cstat-no" title="statement not covered" >        playerAddress = _playerAddress</span>;
+<span class="fstat-no" title="function not covered" >    function setTreasury(address _treasuryAddress) public {</span>
+<span class="cstat-no" title="statement not covered" >        treasuryAddress = _treasuryAddress</span>;
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function setPlayerStats(address _playerStatsAddress) public {</span>
 <span class="cstat-no" title="statement not covered" >        playerStatsAddress = _playerStatsAddress</span>;
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function start(address _who) virtual public {</span>
+<span class="fstat-no" title="function not covered" >    function start(address _who) public virtual {</span>
 <span class="cstat-no" title="statement not covered" >        emit SchemeStarted(getSchemeName(), _who, block.timestamp);</span>
     }
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function complete(address _who) onlySchemeManager virtual public {}</span>
+<span class="fstat-no" title="function not covered" >    function complete(address _who) public virtual onlySchemeManager {}</span>
 &nbsp;
-<span class="fstat-no" title="function not covered" >    function getSchemeName() virtual pure internal returns (string memory) {</span>
+<span class="fstat-no" title="function not covered" >    function getSchemeName() internal pure virtual returns (string memory) {</span>
 <span class="cstat-no" title="statement not covered" >        return "";</span>
     }
 &nbsp;
@@ -255,8 +277,19 @@ abstract contract BaseScheme {
 <span class="cstat-no" title="statement not covered" >        return Random(randomNumberGenerator).random(100);</span>
     }
 &nbsp;
+<span class="fstat-no" title="function not covered" >    function increaseStats(</span>
+        address _who,
+        uint256 _chadary,
+        uint256 _degeneracy,
+        uint256 _fomostition,
+        uint256 _rugpullable
+    ) internal {
+<span class="cstat-no" title="statement not covered" >        PlayerStats(playerStatsAddress).increaseFarmingStats(_who, _chadary, _degeneracy, _fomostition, _rugpullable)</span>;
+    }
+&nbsp;
 <span class="fstat-no" title="function not covered" >    function mint(address _who, uint256 _amount) internal {</span>
-<span class="cstat-no" title="statement not covered" >        Cash(cashContract).mint(_who, _amount)</span>;
+<span class="cstat-no" title="statement not covered" >        Cash(cashContract).mint(address(this), _amount)</span>;
+<span class="cstat-no" title="statement not covered" >        Treasury(treasuryAddress).depositCashTo(_who, _amount)</span>;
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function getScheme() public view returns (uint256 _duration, string memory _name) {</span>
@@ -274,7 +307,7 @@ abstract contract BaseScheme {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 22 2020 19:59:01 GMT+0000 (Greenwich Mean Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 28 2020 13:27:39 GMT+0000 (Greenwich Mean Time)
 </div>
 </div>
 <script src="../../prettify.js"></script>
