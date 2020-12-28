@@ -5,6 +5,8 @@ import "./item/ItemBase.sol";
 import "./player/Treasury.sol";
 
 contract Shop is Ownable {
+    using SafeMath for uint256;
+
     struct Item {
         uint256 price;
     }
@@ -15,9 +17,9 @@ contract Shop is Ownable {
 
     function purchase(address _itemAddress, uint256 _amount) public {
         Item memory itemListing = items[_itemAddress];
-        uint256 balance = Treasury(treasuryContract).getBalance(msg.sender);
+        uint256 balance = Treasury(treasuryContract).balances(msg.sender);
 
-        require(balance >= itemListing.price, "Not enough funds");
+        require(balance >= (itemListing.price.mul(_amount)), "Not enough funds");
 
         ItemBase(_itemAddress).mint(msg.sender, _amount);
     }
@@ -30,7 +32,7 @@ contract Shop is Ownable {
         items[_itemAddress] = Item({price: _price});
     }
 
-    function setPlayerContract(address _treasuryContractAddress) public {
+    function setTreasuryContract(address _treasuryContractAddress) public {
         treasuryContract = _treasuryContractAddress;
     }
 }

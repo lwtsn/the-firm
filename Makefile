@@ -13,7 +13,7 @@ compile-clean:
 	make compile
 
 test:
-	npm run-script test test/player/TreasuryTest.ts
+	npm run-script test
 
 run-node:
 	@npx hardhat node
