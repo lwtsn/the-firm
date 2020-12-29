@@ -25,10 +25,7 @@ contract Shop is Ownable {
     function list(address _itemAddress, uint256 _itemPrice) public {
         require(false == isEntity(_itemAddress), "Item already exists");
 
-        itemStructs[_itemAddress] = Item({
-        price : _itemPrice,
-        listPointer : itemList.length
-        });
+        itemStructs[_itemAddress] = Item({price: _itemPrice, listPointer: itemList.length});
 
         itemList.push(_itemAddress);
     }
@@ -45,9 +42,7 @@ contract Shop is Ownable {
         uint256 rowToDelete = itemStructs[_itemAddress].listPointer;
 
         // If length is  1 or the row to delete is the final row we will just remove the record
-        if (itemList.length == 1 || rowToDelete == itemList.length - 1) {
-
-        } else {
+        if (itemList.length > 1 && rowToDelete != itemList.length - 1) {
             // last row in list
             address rowToMove = itemList[itemList.length - 1];
 
@@ -84,12 +79,11 @@ contract Shop is Ownable {
         address[] memory itemAddresses = new address[](itemList.length);
         uint256[] memory itemPrices = new uint256[](itemList.length);
 
-        for (uint256 i = 0; i < itemList.length; i ++) {
+        for (uint256 i = 0; i < itemList.length; i++) {
             itemAddresses[i] = itemList[i];
             itemPrices[i] = itemStructs[itemList[i]].price;
         }
 
         return (itemAddresses, itemPrices);
     }
-
 }
