@@ -10,6 +10,7 @@ export const SCHEME_SCROUNGE_FOR_SATOSHIS = 'ScroungeForSatochis';
 export const SCHEME_TEST = 'TestScheme';
 export const SHOP = 'Shop';
 export const TREASURY = 'Treasury';
+export const TRAINING = 'Training';
 
 export const WEAPON_BASE = 'WeaponBase';
 

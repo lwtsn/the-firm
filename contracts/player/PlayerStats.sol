@@ -47,46 +47,52 @@ contract PlayerStats is AccessControl {
     }
 
     function createBasePlayer(address _who) public onlyNewPlayer(_who) onlyPlayerManager {
-        BattleStats memory battleStats =
-            BattleStats({baseStrength: 20, baseDexterity: 20, baseDefence: 20, baseConstitution: 20});
+        uint256 defaultBattleStats = 20 * 1 ether;
 
-        FarmingStats memory farmingStats = FarmingStats({degeneracy: 0, chadary: 0, fomostition: 0, rugpullable: 0});
+        BattleStats memory battleStats = BattleStats({
+        baseStrength : defaultBattleStats,
+        baseDexterity : defaultBattleStats,
+        baseDefence : defaultBattleStats,
+        baseConstitution : defaultBattleStats
+        });
+
+        FarmingStats memory farmingStats = FarmingStats({degeneracy : 0, chadary : 0, fomostition : 0, rugpullable : 0});
 
         playerStats[_who] = Stats({
-            level: 1,
-            experience: 0,
-            baseHealth: 100,
-            currentHealth: 100,
-            battleStats: battleStats,
-            farmingStats: farmingStats,
-            isPlayer: true
+        level : 1,
+        experience : 0,
+        baseHealth : 100,
+        currentHealth : 100,
+        battleStats : battleStats,
+        farmingStats : farmingStats,
+        isPlayer : true
         });
     }
 
     function getPlayerStats(address _who)
-        public
-        view
-        returns (
-            uint256 level,
-            uint256 experience,
-            uint256 baseHealth,
-            uint256 currentHealth,
-            bool isPlayer
-        )
+    public
+    view
+    returns (
+        uint256 level,
+        uint256 experience,
+        uint256 baseHealth,
+        uint256 currentHealth,
+        bool isPlayer
+    )
     {
         Stats memory stats = playerStats[_who];
         return (stats.level, stats.experience, stats.baseHealth, stats.currentHealth, stats.isPlayer);
     }
 
     function getPlayerBattleStats(address _who)
-        public
-        view
-        returns (
-            uint256 baseStrength,
-            uint256 baseDexterity,
-            uint256 baseDefence,
-            uint256 baseConstitution
-        )
+    public
+    view
+    returns (
+        uint256 baseStrength,
+        uint256 baseDexterity,
+        uint256 baseDefence,
+        uint256 baseConstitution
+    )
     {
         BattleStats memory stats = playerStats[_who].battleStats;
 
@@ -94,14 +100,14 @@ contract PlayerStats is AccessControl {
     }
 
     function getPlayerFarmingStats(address _who)
-        public
-        view
-        returns (
-            uint256 _degeneracy,
-            uint256 _chadary,
-            uint256 _fomostition,
-            uint256 _rugpullable
-        )
+    public
+    view
+    returns (
+        uint256 _degeneracy,
+        uint256 _chadary,
+        uint256 _fomostition,
+        uint256 _rugpullable
+    )
     {
         FarmingStats memory stats = playerStats[_who].farmingStats;
 

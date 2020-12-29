@@ -1,8 +1,7 @@
 import { expect } from 'chai';
-import { Player, PlayerStats } from '../../typechain';
+import { PlayerStats } from '../../typechain';
 import { deployPlayerStatsContract, getProvider } from '../helpers/contract';
 import { oneEther } from '../helpers/numbers';
-import { BigNumber } from 'ethers';
 
 const [alice, bob] = getProvider().getWallets();
 
@@ -26,10 +25,12 @@ describe('Player Stats', () => {
     });
 
     await playerStats.getPlayerBattleStats(alice.address).then((stats: any) => {
-      expect(stats.baseStrength).to.eq(20);
-      expect(stats.baseDexterity).to.eq(20);
-      expect(stats.baseDefence).to.eq(20);
-      expect(stats.baseConstitution).to.eq(20);
+      const defaultStat = oneEther.mul(20);
+
+      expect(stats.baseStrength).to.eq(defaultStat);
+      expect(stats.baseDexterity).to.eq(defaultStat);
+      expect(stats.baseDefence).to.eq(defaultStat);
+      expect(stats.baseConstitution).to.eq(defaultStat);
     });
 
     await playerStats.getPlayerFarmingStats(alice.address).then((stats: any) => {

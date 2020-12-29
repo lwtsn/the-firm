@@ -109,6 +109,7 @@ describe('Shop', () => {
   describe('Item purchasing', () => {
     it('Should allow purchasing of registered items', async () => {
       await treasury.mock.balances.withArgs(alice.address).returns(oneEther.mul(200));
+      await treasury.mock.spendCash.withArgs(alice.address, oneEther.mul(100)).returns();
       await item.mock.mint.withArgs(alice.address, 1).returns();
 
       await shop.list(item.address, oneEther.mul(100));

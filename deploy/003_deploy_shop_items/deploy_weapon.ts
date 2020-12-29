@@ -19,6 +19,9 @@ export function deployWeapon(name: string, damageBoost: number, cost: BigNumber)
 
     console.log('Adding ' + name + '  to shop: ' + deployment.address);
     await execute(SHOP, { from: deployer, log: true }, 'list', deployment.address, cost);
+
+    // console.log('Setting shop as minter of ' + name);
+    // await execute(deployment.address, { from: deployer, log: true }, '');
   };
 
   return func;

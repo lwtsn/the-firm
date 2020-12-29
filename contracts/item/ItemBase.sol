@@ -3,6 +3,7 @@ pragma solidity ^0.6.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+// todo add minter
 contract ItemBase is ERC721, Ownable {
     uint256 nextItemId;
 

@@ -4,7 +4,6 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
-import "../player/Player.sol";
 import "../player/PlayerStats.sol";
 
 // https://www.investopedia.com/terms/c/continuouscompounding.asp#:~:text=Calculating%20the%20limit%20of%20this,mathematical%20constant%20approximated%20as%202.7183.
@@ -26,6 +25,7 @@ contract Training is Ownable {
     enum Duration {ONE_HOUR, TWO_HOURS, FOUR_HOURS, EIGHT_HOURS, TWELVE_HOURS, ONE_DAY, TWO_DAYS, FOUR_DAYS, ONE_WEEK}
 
     mapping(address => Training) public trainingMapping;
+
     address private playerStatsAddress;
 
     function setPlayerStats(address _playerStatsAddress) public {

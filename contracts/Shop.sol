@@ -56,10 +56,13 @@ contract Shop is Ownable {
 
     function purchase(address _itemAddress, uint256 _amount) public {
         Item memory itemListing = itemStructs[_itemAddress];
+
         uint256 balance = Treasury(treasuryContract).balances(msg.sender);
+        uint256 totalCost = itemListing.price.mul(_amount);
 
-        require(balance >= (itemListing.price.mul(_amount)), "Not enough funds");
+        require(balance >= totalCost, "Not enough funds");
 
+        Treasury(treasuryContract).spendCash(msg.sender, totalCost);
         ItemBase(_itemAddress).mint(msg.sender, _amount);
     }
 
