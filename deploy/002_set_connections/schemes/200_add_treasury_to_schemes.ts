@@ -1,6 +1,13 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
-import { PLAYER, SCHEME_SCROUNGE_FOR_SATOSHIS, SCHEME_TEST, SCHEME_YIELD_FARM, SCHEMES, TREASURY } from '../constants';
+import {
+  PLAYER,
+  SCHEME_SCROUNGE_FOR_SATOSHIS,
+  SCHEME_TEST,
+  SCHEME_YIELD_FARM,
+  SCHEMES,
+  TREASURY,
+} from '../../constants';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, deployments } = hre;

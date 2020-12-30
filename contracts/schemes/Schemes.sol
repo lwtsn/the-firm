@@ -53,6 +53,15 @@ contract Schemes {
         complete(msg.sender, schemeId);
     }
 
+    function skipScheme() public {
+        require(hasOngoingScheme[msg.sender], "No scheme in progress");
+
+        uint256 schemeId = ongoingSchemes[msg.sender].schemeId;
+        BaseScheme(schemes[schemeId].schemeAddress).complete(msg.sender);
+
+        complete(msg.sender, schemeId);
+    }
+
     function listSchemes() public view returns (bool[] memory _schemes) {
         bool[] memory activeSchemes = new bool[](nextSchemeId);
 

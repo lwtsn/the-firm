@@ -7,7 +7,7 @@ import {
   SCHEME_YIELD_FARM,
   SCHEMES,
   TRAINING,
-} from '../constants';
+} from '../../constants';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, deployments } = hre;
