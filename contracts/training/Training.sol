@@ -6,7 +6,6 @@ import "hardhat/console.sol";
 
 import "../player/PlayerStats.sol";
 
-// https://www.investopedia.com/terms/c/continuouscompounding.asp#:~:text=Calculating%20the%20limit%20of%20this,mathematical%20constant%20approximated%20as%202.7183.
 contract Training is Ownable {
     using SafeMath for uint256;
 

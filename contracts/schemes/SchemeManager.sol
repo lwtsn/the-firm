@@ -6,6 +6,9 @@ import "./BaseScheme.sol";
 contract SchemeManager {
     using SafeMath for uint256;
 
+    event SchemeAdded(address schemeAddress, uint256 id, uint256 when);
+    event SchemeStarted(address schemeAddress, address who, uint256 when);
+
     struct Scheme {
         address schemeAddress;
         bool isScheme;
@@ -29,6 +32,8 @@ contract SchemeManager {
     }
 
     function addScheme(address _schemeAddress) public {
+        emit SchemeAdded(_schemeAddress, nextSchemeId, block.timestamp);
+
         schemes[nextSchemeId] = Scheme({schemeAddress: _schemeAddress, isScheme: true});
 
         nextSchemeId = nextSchemeId.add(1);
@@ -41,6 +46,8 @@ contract SchemeManager {
         BaseScheme(schemes[_schemeId].schemeAddress).start(msg.sender);
 
         start(msg.sender, _schemeId);
+
+        emit SchemeStarted(schemes[_schemeId].schemeAddress, msg.sender, block.timestamp);
     }
 
     // todo scheme logic sits here and calls complete

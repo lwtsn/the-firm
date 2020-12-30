@@ -7,6 +7,22 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 contract PlayerStats is AccessControl {
     using SafeMath for uint256;
 
+    event PlayerBattleStatsUpdated (
+        address who,
+        uint256 strengthIncrease,
+        uint256 dexterityIncrease,
+        uint256 defenceIncrease,
+        uint256 constitutionIncrease
+    );
+
+    event PlayerFarmingStatsUpdated (
+        address who,
+        uint256 degeneracyIncrease,
+        uint256 chadaryIncrease,
+        uint256 fomostitionIncrease,
+        uint256 rugpullableIncrease
+    );
+
     struct Stats {
         uint256 level;
         uint256 experience;
@@ -121,6 +137,8 @@ contract PlayerStats is AccessControl {
         uint256 _fomostition,
         uint256 _rugpullable
     ) public onlyPlayerManager existingPlayer(_who) {
+        emit PlayerFarmingStatsUpdated(_who, _chadary, _degeneracy, _fomostition, _rugpullable);
+
         playerStats[_who].farmingStats.chadary = playerStats[_who].farmingStats.chadary.add(_chadary);
         playerStats[_who].farmingStats.degeneracy = playerStats[_who].farmingStats.degeneracy.add(_degeneracy);
         playerStats[_who].farmingStats.fomostition = playerStats[_who].farmingStats.fomostition.add(_fomostition);
@@ -134,6 +152,8 @@ contract PlayerStats is AccessControl {
         uint256 _defence,
         uint256 _constitution
     ) public onlyPlayerManager existingPlayer(_who) {
+        emit PlayerBattleStatsUpdated(_who, _strength, _dexterity, _defence, _constitution);
+
         playerStats[_who].battleStats.baseStrength = playerStats[_who].battleStats.baseStrength.add(_strength);
         playerStats[_who].battleStats.baseDexterity = playerStats[_who].battleStats.baseDexterity.add(_dexterity);
         playerStats[_who].battleStats.baseDefence = playerStats[_who].battleStats.baseDefence.add(_defence);

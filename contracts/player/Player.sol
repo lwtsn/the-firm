@@ -10,6 +10,8 @@ import "./PlayerStats.sol";
 contract Player is AccessControl {
     using SafeMath for uint256;
 
+    event PlayerCreated(address _who, uint256 _when);
+
     mapping(address => bool) private accounts;
 
     address private playerStats;
@@ -30,6 +32,8 @@ contract Player is AccessControl {
         accounts[msg.sender] = true;
 
         PlayerStats(playerStats).createBasePlayer(msg.sender);
+
+        emit PlayerCreated(msg.sender, block.timestamp);
     }
 
     function isPlayer(address _who) public view returns (bool) {

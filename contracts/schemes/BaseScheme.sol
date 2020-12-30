@@ -9,6 +9,7 @@ abstract contract BaseScheme {
     uint256 constant MAX_UINT = 2**256 - 1;
 
     event SchemeStarted(string name, address who, uint256 when);
+    event SchemeCompleted(string name, address who, uint256 when);
 
     uint256 public duration;
     uint256 internal experience;

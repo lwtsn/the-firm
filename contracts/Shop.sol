@@ -8,6 +8,11 @@ import "./player/Treasury.sol";
 contract Shop is Ownable {
     using SafeMath for uint256;
 
+    event ItemAdded(address itemAddress, uint256 price, uint256 when);
+    event ItemUpdated(address itemAddress, uint256 price, uint256 when);
+    event ItemRemoved(address itemAddress, uint256 when);
+    event ItemPurchased(address who, address itemAddress, uint256 amount, uint256 when);
+
     address treasuryContract;
 
     struct Item {
@@ -25,15 +30,19 @@ contract Shop is Ownable {
     function list(address _itemAddress, uint256 _itemPrice) public {
         require(false == isEntity(_itemAddress), "Item already exists");
 
-        itemStructs[_itemAddress] = Item({price: _itemPrice, listPointer: itemList.length});
+        itemStructs[_itemAddress] = Item({price : _itemPrice, listPointer : itemList.length});
 
         itemList.push(_itemAddress);
+
+        emit ItemAdded(_itemAddress, _itemPrice, block.timestamp);
     }
 
     function update(address _itemAddress, uint256 _itemPrice) public {
         require(isEntity(_itemAddress), "Item not found");
 
         itemStructs[_itemAddress].price = _itemPrice;
+
+        emit ItemUpdated(_itemAddress, _itemPrice, block.timestamp);
     }
 
     function remove(address _itemAddress) public {
@@ -52,6 +61,8 @@ contract Shop is Ownable {
 
         itemList.pop();
         delete itemStructs[_itemAddress];
+
+        emit ItemRemoved(_itemAddress, block.timestamp);
     }
 
     function purchase(address _itemAddress, uint256 _amount) public {
@@ -64,6 +75,8 @@ contract Shop is Ownable {
 
         Treasury(treasuryContract).spendCash(msg.sender, totalCost);
         ItemBase(_itemAddress).mint(msg.sender, _amount);
+
+        emit ItemPurchased(msg.sender, _itemAddress, _amount, block.timestamp);
     }
 
     function getItemCount() public view returns (uint256 itemCount) {
