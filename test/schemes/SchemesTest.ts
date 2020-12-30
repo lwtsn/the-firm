@@ -1,25 +1,25 @@
 import { expect } from 'chai';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
-import { Schemes, YieldFarm } from '../../typechain';
+import { SchemeManager, YieldFarm } from '../../typechain';
 import BaseSchemeArtifact from '../../artifacts/contracts/schemes/BaseScheme.sol/BaseScheme.json';
 
 import { deploySchemesContract, getBlockTime, getProvider, wait } from '../helpers/contract';
 
 const [alice] = getProvider().getWallets();
 
-describe('Schemes', () => {
+describe('Scheme Manager', () => {
   let scheme: YieldFarm | MockContract;
-  let schemes: Schemes;
+  let schemeManager: SchemeManager;
 
   beforeEach(async () => {
     scheme = await deployMockContract(alice, BaseSchemeArtifact.abi);
-    schemes = await deploySchemesContract(alice);
+    schemeManager = await deploySchemesContract(alice);
   });
 
   it('Should allow creation of new Schemes', async () => {
-    await schemes.addScheme(scheme.address);
+    await schemeManager.addScheme(scheme.address);
 
-    await schemes.schemes(1).then((fetchedScheme: any) => {
+    await schemeManager.schemes(1).then((fetchedScheme: any) => {
       expect(fetchedScheme.schemeAddress).to.eq(scheme.address);
     });
   });
@@ -28,11 +28,11 @@ describe('Schemes', () => {
     let scheme2 = await deployMockContract(alice, BaseSchemeArtifact.abi);
     let scheme3 = await deployMockContract(alice, BaseSchemeArtifact.abi);
 
-    await schemes.addScheme(scheme.address);
-    await schemes.addScheme(scheme2.address);
-    await schemes.addScheme(scheme3.address);
+    await schemeManager.addScheme(scheme.address);
+    await schemeManager.addScheme(scheme2.address);
+    await schemeManager.addScheme(scheme3.address);
 
-    await schemes.listSchemes().then((schemes: boolean[]) => {
+    await schemeManager.listSchemes().then((schemes: boolean[]) => {
       expect(schemes[0]).to.be.false;
       expect(schemes[1]).to.be.true;
       expect(schemes[2]).to.be.true;
@@ -44,25 +44,25 @@ describe('Schemes', () => {
     let duration = 3600;
 
     beforeEach(async () => {
-      await schemes.addScheme(scheme.address);
+      await schemeManager.addScheme(scheme.address);
 
       await scheme.mock.start.returns();
       await scheme.mock.duration.returns(duration);
     });
 
     it('Should allow schemes to be started', async () => {
-      await schemes.getOngoingScheme(alice.address).then((scheme: any) => {
+      await schemeManager.getOngoingScheme(alice.address).then((scheme: any) => {
         expect(scheme._schemeId).to.eq(0);
         expect(scheme._isOngoing).to.eq(false);
         expect(scheme._timeCompleting).to.eq(0);
         expect(scheme._timeStarted).to.eq(0);
       });
 
-      await schemes.startScheme(1);
+      await schemeManager.startScheme(1);
 
       let time = await getBlockTime();
 
-      await schemes.getOngoingScheme(alice.address).then((scheme: any) => {
+      await schemeManager.getOngoingScheme(alice.address).then((scheme: any) => {
         expect(scheme._isOngoing).to.eq(true);
         expect(scheme._schemeId).to.eq(1);
         expect(scheme._timeStarted).to.eq(time);
@@ -71,14 +71,14 @@ describe('Schemes', () => {
     });
 
     it('Should allow schemes to be completed', async () => {
-      await schemes.startScheme(1);
+      await schemeManager.startScheme(1);
       await scheme.mock.complete.returns();
 
       await wait(3600);
 
-      await schemes.completeScheme();
+      await schemeManager.completeScheme();
 
-      await schemes.getOngoingScheme(alice.address).then((scheme: any) => {
+      await schemeManager.getOngoingScheme(alice.address).then((scheme: any) => {
         expect(scheme._isOngoing).to.eq(false);
         expect(scheme._schemeId).to.eq(0);
         expect(scheme._timeStarted).to.eq(0);
@@ -88,22 +88,22 @@ describe('Schemes', () => {
 
     describe('Restrictions', () => {
       it('Should prevent starting an scheme if one is already in progress', async () => {
-        await schemes.startScheme(1);
-        await expect(schemes.startScheme(1)).to.be.revertedWith('A scheme is already in progress');
+        await schemeManager.startScheme(1);
+        await expect(schemeManager.startScheme(1)).to.be.revertedWith('A scheme is already in progress');
       });
 
       it('Should prevent starting an invalid scheme', async () => {
-        await expect(schemes.startScheme(999)).to.be.revertedWith('Invalid scheme chosen');
+        await expect(schemeManager.startScheme(999)).to.be.revertedWith('Invalid scheme chosen');
       });
 
       it('Should prevent completing an scheme if one is not in progress', async () => {
-        await expect(schemes.completeScheme()).to.be.revertedWith('No scheme in progress');
+        await expect(schemeManager.completeScheme()).to.be.revertedWith('No scheme in progress');
       });
 
       it('Should prevent completing an scheme before it the duration has passed', async () => {
-        await schemes.startScheme(1);
+        await schemeManager.startScheme(1);
 
-        await expect(schemes.completeScheme()).to.be.revertedWith('Scheme is not complete');
+        await expect(schemeManager.completeScheme()).to.be.revertedWith('Scheme is not complete');
       });
     });
   });

@@ -4,7 +4,7 @@ import { DeployFunction } from 'hardhat-deploy/types';
 export const CASH = 'Cash';
 export const PLAYER = 'Player';
 export const PLAYER_STATS = 'PlayerStats';
-export const SCHEMES = 'Schemes';
+export const SCHEME_MANAGER = 'SchemeManager';
 export const SCHEME_YIELD_FARM = 'YieldFarm';
 export const SCHEME_SCROUNGE_FOR_SATOSHIS = 'ScroungeForSatochis';
 export const SCHEME_TEST = 'TestScheme';

@@ -1,11 +1,10 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
 import {
-  PLAYER,
+  SCHEME_MANAGER,
   SCHEME_SCROUNGE_FOR_SATOSHIS,
   SCHEME_TEST,
   SCHEME_YIELD_FARM,
-  SCHEMES,
   TREASURY,
 } from '../../constants';
 
@@ -29,4 +28,4 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
 export default func;
 
-func.tags = [SCHEMES];
+func.tags = [SCHEME_MANAGER];

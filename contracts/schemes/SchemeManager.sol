@@ -3,7 +3,7 @@ pragma solidity ^0.6.0;
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./BaseScheme.sol";
 
-contract Schemes {
+contract SchemeManager {
     using SafeMath for uint256;
 
     struct Scheme {
@@ -43,6 +43,7 @@ contract Schemes {
         start(msg.sender, _schemeId);
     }
 
+    // todo scheme logic sits here and calls complete
     function completeScheme() public {
         require(hasOngoingScheme[msg.sender], "No scheme in progress");
         require(block.timestamp >= ongoingSchemes[msg.sender].timeCompleting, "Scheme is not complete");
