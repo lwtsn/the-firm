@@ -5,9 +5,10 @@ import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
 import ShopArtifact from '../../artifacts/contracts/Shop.sol/Shop.json';
 import SchemeManagerArtifact from '../../artifacts/contracts/Schemes/SchemeManager.sol/SchemeManager.json';
 import TrainingArtifact from '../../artifacts/contracts/training/Training.sol/Training.json';
+import JobArtifact from '../../artifacts/contracts/jobs/Jobs.sol/Jobs.json';
 import TreasuryArtifact from '../../artifacts/contracts/player/Treasury.sol/Treasury.json';
 
-import { SchemeManager, Cash, Player, PlayerStats, Shop, Training, Treasury } from '../../typechain';
+import { SchemeManager, Cash, Player, PlayerStats, Shop, Training, Treasury, Jobs } from '../../typechain';
 
 import { Signer } from 'ethers';
 import { ethers } from 'hardhat';
@@ -51,6 +52,9 @@ export async function deployTrainingContract(signer: Signer) {
 
 export async function deployTreasuryContract(signer: Signer) {
   return (await deployContract(signer, TreasuryArtifact)) as Treasury;
+}
+export async function deployJobContract(signer: Signer) {
+  return (await deployContract(signer, JobArtifact)) as Jobs;
 }
 
 export async function mineBlock() {

@@ -30,7 +30,7 @@ contract Shop is Ownable {
     function list(address _itemAddress, uint256 _itemPrice) public {
         require(false == isEntity(_itemAddress), "Item already exists");
 
-        itemStructs[_itemAddress] = Item({price : _itemPrice, listPointer : itemList.length});
+        itemStructs[_itemAddress] = Item({price: _itemPrice, listPointer: itemList.length});
 
         itemList.push(_itemAddress);
 

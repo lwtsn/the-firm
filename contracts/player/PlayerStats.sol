@@ -19,8 +19,7 @@ contract PlayerStats is AccessControl {
         address who,
         uint256 degeneracyIncrease,
         uint256 chadaryIncrease,
-        uint256 fomostitionIncrease,
-        uint256 rugpullableIncrease
+        uint256 unrekableIncrease
     );
 
     struct Stats {
@@ -41,10 +40,9 @@ contract PlayerStats is AccessControl {
     }
 
     struct FarmingStats {
-        uint256 degeneracy; // Higher gains
-        uint256 chadary; // Chance to succeed
-        uint256 fomostition; // Higher losses
-        uint256 rugpullable; // Chance to fail
+        uint256 chadary; // Necessary for higher "Legitimate" jobs but you earn more in "Degenerate" jobs
+        uint256 degeneracy; // Necessary for higher "Degenerate" jobs but you earn more in "Criminal" jobs
+        uint256 unrekable; // Necessary for higher "Criminal" jobs but you earn more in "Legitimate" jobs
     }
 
     mapping(address => Stats) playerStats;
@@ -72,7 +70,7 @@ contract PlayerStats is AccessControl {
         baseConstitution : defaultBattleStats
         });
 
-        FarmingStats memory farmingStats = FarmingStats({degeneracy : 0, chadary : 0, fomostition : 0, rugpullable : 0});
+        FarmingStats memory farmingStats = FarmingStats({degeneracy : 0, chadary : 0, unrekable : 0});
 
         playerStats[_who] = Stats({
         level : 1,
@@ -121,28 +119,25 @@ contract PlayerStats is AccessControl {
     returns (
         uint256 _degeneracy,
         uint256 _chadary,
-        uint256 _fomostition,
-        uint256 _rugpullable
+        uint256 _unrekable
     )
     {
         FarmingStats memory stats = playerStats[_who].farmingStats;
 
-        return (stats.degeneracy, stats.chadary, stats.fomostition, stats.rugpullable);
+        return (stats.degeneracy, stats.chadary, stats.unrekable);
     }
 
     function increaseFarmingStats(
         address _who,
         uint256 _chadary,
         uint256 _degeneracy,
-        uint256 _fomostition,
-        uint256 _rugpullable
+        uint256 _unrekable
     ) public onlyPlayerManager existingPlayer(_who) {
-        emit PlayerFarmingStatsUpdated(_who, _chadary, _degeneracy, _fomostition, _rugpullable);
+        emit PlayerFarmingStatsUpdated(_who, _chadary, _degeneracy, _unrekable);
 
         playerStats[_who].farmingStats.chadary = playerStats[_who].farmingStats.chadary.add(_chadary);
         playerStats[_who].farmingStats.degeneracy = playerStats[_who].farmingStats.degeneracy.add(_degeneracy);
-        playerStats[_who].farmingStats.fomostition = playerStats[_who].farmingStats.fomostition.add(_fomostition);
-        playerStats[_who].farmingStats.rugpullable = playerStats[_who].farmingStats.rugpullable.add(_rugpullable);
+        playerStats[_who].farmingStats.unrekable = playerStats[_who].farmingStats.unrekable.add(_unrekable);
     }
 
     function increaseBattleStats(

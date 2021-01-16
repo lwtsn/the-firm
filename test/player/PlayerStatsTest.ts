@@ -36,20 +36,18 @@ describe('Player Stats', () => {
     await playerStats.getPlayerFarmingStats(alice.address).then((stats: any) => {
       expect(stats._degeneracy).to.eq(0);
       expect(stats._chadary).to.eq(0);
-      expect(stats._fomostition).to.eq(0);
-      expect(stats._rugpullable).to.eq(0);
+      expect(stats._unrekable).to.eq(0);
     });
   });
   it('Should allow player farming stats to be increased', async () => {
     await playerStats.createBasePlayer(alice.address);
 
-    await playerStats.increaseFarmingStats(alice.address, 40, 40, 40, 40);
+    await playerStats.increaseFarmingStats(alice.address, 40, 40, 40);
 
     await playerStats.getPlayerFarmingStats(alice.address).then((stats: any) => {
       expect(stats._degeneracy).to.eq(40);
       expect(stats._chadary).to.eq(40);
-      expect(stats._fomostition).to.eq(40);
-      expect(stats._rugpullable).to.eq(40);
+      expect(stats._unrekable).to.eq(40);
     });
   });
 
@@ -69,13 +67,13 @@ describe('Player Stats', () => {
     });
 
     it('Should prevent increasing farming stats for non player managers', async () => {
-      await expect(playerStats.increaseFarmingStats(bob.address, 40, 40, 40, 40)).to.be.revertedWith(
+      await expect(playerStats.increaseFarmingStats(bob.address, 40, 40, 40)).to.be.revertedWith(
         "Player doesn't exist"
       );
     });
 
     it('Should prevent increasing farming stats for non player', async () => {
-      await expect(bobConnectedPlayerStats.increaseFarmingStats(bob.address, 40, 40, 40, 40)).to.be.revertedWith(
+      await expect(bobConnectedPlayerStats.increaseFarmingStats(bob.address, 40, 40, 40)).to.be.revertedWith(
         'Not Player Manager'
       );
     });

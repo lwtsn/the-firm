@@ -65,10 +65,9 @@ abstract contract BaseScheme {
         address _who,
         uint256 _chadary,
         uint256 _degeneracy,
-        uint256 _fomostition,
-        uint256 _rugpullable
+        uint256 _unrekable
     ) internal {
-        PlayerStats(playerStatsAddress).increaseFarmingStats(_who, _chadary, _degeneracy, _fomostition, _rugpullable);
+        PlayerStats(playerStatsAddress).increaseFarmingStats(_who, _chadary, _degeneracy, _unrekable);
     }
 
     function mint(address _who, uint256 _amount) internal {

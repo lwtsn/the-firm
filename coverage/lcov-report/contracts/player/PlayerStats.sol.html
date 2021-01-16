@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/24</span>
+        <span class='fraction'>0/27</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -37,7 +37,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/28</span>
+        <span class='fraction'>0/31</span>
       </div>
     </div>
   </div>
@@ -201,7 +201,49 @@
 156
 157
 158
-159</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -252,6 +294,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -319,9 +367,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -330,6 +380,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -367,6 +419,22 @@ import "@openzeppelin/contracts/math/SafeMath.sol";
 //https://thatsallgames.com/2019/02/05/the-anatomy-of-rpgs-part-1-stats/
 contract PlayerStats is AccessControl {
     using SafeMath for uint256;
+&nbsp;
+    event PlayerBattleStatsUpdated (
+        address who,
+        uint256 strengthIncrease,
+        uint256 dexterityIncrease,
+        uint256 defenceIncrease,
+        uint256 constitutionIncrease
+    );
+&nbsp;
+    event PlayerFarmingStatsUpdated (
+        address who,
+        uint256 degeneracyIncrease,
+        uint256 chadaryIncrease,
+        uint256 fomostitionIncrease,
+        uint256 rugpullableIncrease
+    );
 &nbsp;
     struct Stats {
         uint256 level;
@@ -408,46 +476,52 @@ contract PlayerStats is AccessControl {
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function createBasePlayer(address _who) public onlyNewPlayer(_who) onlyPlayerManager {</span>
-<span class="cstat-no" title="statement not covered" >        BattleStats memory battleStats =</span>
-            BattleStats({baseStrength: 20, baseDexterity: 20, baseDefence: 20, baseConstitution: 20});
+<span class="cstat-no" title="statement not covered" >        uint256 defaultBattleStats = 20 * 1 ether;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        FarmingStats memory farmingStats = FarmingStats({degeneracy: 0, chadary: 0, fomostition: 0, rugpullable: 0});</span>
+<span class="cstat-no" title="statement not covered" >        BattleStats memory battleStats = BattleStats({</span>
+        baseStrength : defaultBattleStats,
+        baseDexterity : defaultBattleStats,
+        baseDefence : defaultBattleStats,
+        baseConstitution : defaultBattleStats
+        });
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        FarmingStats memory farmingStats = FarmingStats({degeneracy : 0, chadary : 0, fomostition : 0, rugpullable : 0});</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who] = Stats({</span>
-            level: 1,
-            experience: 0,
-            baseHealth: 100,
-            currentHealth: 100,
-            battleStats: battleStats,
-            farmingStats: farmingStats,
-            isPlayer: true
+        level : 1,
+        experience : 0,
+        baseHealth : 100,
+        currentHealth : 100,
+        battleStats : battleStats,
+        farmingStats : farmingStats,
+        isPlayer : true
         });
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function getPlayerStats(address _who)</span>
-        public
-        view
-        returns (
-            uint256 level,
-            uint256 experience,
-            uint256 baseHealth,
-            uint256 currentHealth,
-            bool isPlayer
-        )
+    public
+    view
+    returns (
+        uint256 level,
+        uint256 experience,
+        uint256 baseHealth,
+        uint256 currentHealth,
+        bool isPlayer
+    )
     {
 <span class="cstat-no" title="statement not covered" >        Stats memory stats = playerStats[_who];</span>
 <span class="cstat-no" title="statement not covered" >        return (stats.level, stats.experience, stats.baseHealth, stats.currentHealth, stats.isPlayer);</span>
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function getPlayerBattleStats(address _who)</span>
-        public
-        view
-        returns (
-            uint256 baseStrength,
-            uint256 baseDexterity,
-            uint256 baseDefence,
-            uint256 baseConstitution
-        )
+    public
+    view
+    returns (
+        uint256 baseStrength,
+        uint256 baseDexterity,
+        uint256 baseDefence,
+        uint256 baseConstitution
+    )
     {
 <span class="cstat-no" title="statement not covered" >        BattleStats memory stats = playerStats[_who].battleStats;</span>
 &nbsp;
@@ -455,14 +529,14 @@ contract PlayerStats is AccessControl {
     }
 &nbsp;
 <span class="fstat-no" title="function not covered" >    function getPlayerFarmingStats(address _who)</span>
-        public
-        view
-        returns (
-            uint256 _degeneracy,
-            uint256 _chadary,
-            uint256 _fomostition,
-            uint256 _rugpullable
-        )
+    public
+    view
+    returns (
+        uint256 _degeneracy,
+        uint256 _chadary,
+        uint256 _fomostition,
+        uint256 _rugpullable
+    )
     {
 <span class="cstat-no" title="statement not covered" >        FarmingStats memory stats = playerStats[_who].farmingStats;</span>
 &nbsp;
@@ -476,6 +550,8 @@ contract PlayerStats is AccessControl {
         uint256 _fomostition,
         uint256 _rugpullable
     ) public onlyPlayerManager existingPlayer(_who) {
+<span class="cstat-no" title="statement not covered" >        emit PlayerFarmingStatsUpdated(_who, _chadary, _degeneracy, _fomostition, _rugpullable);</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].farmingStats.chadary = playerStats[_who].farmingStats.chadary.add(_chadary)</span>;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].farmingStats.degeneracy = playerStats[_who].farmingStats.degeneracy.add(_degeneracy)</span>;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].farmingStats.fomostition = playerStats[_who].farmingStats.fomostition.add(_fomostition)</span>;
@@ -489,6 +565,8 @@ contract PlayerStats is AccessControl {
         uint256 _defence,
         uint256 _constitution
     ) public onlyPlayerManager existingPlayer(_who) {
+<span class="cstat-no" title="statement not covered" >        emit PlayerBattleStatsUpdated(_who, _strength, _dexterity, _defence, _constitution);</span>
+&nbsp;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].battleStats.baseStrength = playerStats[_who].battleStats.baseStrength.add(_strength)</span>;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].battleStats.baseDexterity = playerStats[_who].battleStats.baseDexterity.add(_dexterity)</span>;
 <span class="cstat-no" title="statement not covered" >        playerStats[_who].battleStats.baseDefence = playerStats[_who].battleStats.baseDefence.add(_defence)</span>;
@@ -523,7 +601,7 @@ contract PlayerStats is AccessControl {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Dec 28 2020 13:27:39 GMT+0000 (Greenwich Mean Time)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Dec 31 2020 11:24:36 GMT+0000 (Greenwich Mean Time)
 </div>
 </div>
 <script src="../../prettify.js"></script>
