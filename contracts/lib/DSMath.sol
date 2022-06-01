@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: ISC
+
 // DSMath from DappHub -> https://github.com/dapphub/ds-math/blob/784079b72c4d782b022b3e893a7c5659aa35971a/src/math.sol
 
 /// math.sol -- mixin for inline numerical wizardry

@@ -1,4 +1,4 @@
-import { ItemBase, Player, Shop, Treasury } from '../typechain';
+import { ItemBase, Shop, Treasury } from '../typechain';
 import { deployShopContract, getProvider } from './helpers/contract';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import ItemArtifact from '../artifacts/contracts/item/ItemBase.sol/ItemBase.json';
@@ -108,9 +108,9 @@ describe('Shop', () => {
 
   describe('Item purchasing', () => {
     it('Should allow purchasing of registered items', async () => {
-      await treasury.mock.balances.withArgs(alice.address).returns(oneEther.mul(200));
-      await treasury.mock.spendCash.withArgs(alice.address, oneEther.mul(100)).returns();
-      await item.mock.mint.withArgs(alice.address, 1).returns();
+      await treasury.balances.withArgs(alice.address).returns(oneEther.mul(200));
+      await treasury.spendCash.withArgs(alice.address, oneEther.mul(100)).returns();
+      await item.mint.withArgs(alice.address, 1).returns();
 
       await shop.list(item.address, oneEther.mul(100));
 
@@ -118,7 +118,7 @@ describe('Shop', () => {
     });
 
     it('Should prevent purchasing items if player balance is too low', async () => {
-      await treasury.mock.balances.withArgs(alice.address).returns(oneEther.mul(200));
+      await treasury.balances.withArgs(alice.address).returns(oneEther.mul(200));
 
       await shop.list(item.address, oneEther.mul(100));
 

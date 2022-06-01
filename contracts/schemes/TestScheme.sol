@@ -1,4 +1,6 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: ISC
+
+pragma solidity ^0.8.0;
 
 import "./BaseScheme.sol";
 
@@ -12,7 +14,7 @@ contract TestScheme is BaseScheme {
         uint256 _chanceOfSuccess,
         uint256 _baseEarning,
         uint256 _earningBonus
-    ) public BaseScheme(_duration, _experience, _chanceOfSuccess) {
+    ) BaseScheme(_duration, _experience, _chanceOfSuccess) {
         baseEarning = _baseEarning;
         earningBonus = _earningBonus;
     }

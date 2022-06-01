@@ -1,9 +1,12 @@
 import { expect } from 'chai';
-import { deployMockContract, MockContract } from 'ethereum-waffle';
+import { MockContract } from 'ethereum-waffle';
 import { SchemeManager, YieldFarm } from '../../typechain';
 import BaseSchemeArtifact from '../../artifacts/contracts/schemes/BaseScheme.sol/BaseScheme.json';
+import { waffle } from 'hardhat';
 
 import { deploySchemesContract, getBlockTime, getProvider, wait } from '../helpers/contract';
+
+const { deployMockContract } = waffle;
 
 const [alice] = getProvider().getWallets();
 
@@ -46,8 +49,8 @@ describe('Scheme Manager', () => {
     beforeEach(async () => {
       await schemeManager.addScheme(scheme.address);
 
-      await scheme.mock.start.returns();
-      await scheme.mock.duration.returns(duration);
+      await scheme.start.returns();
+      await scheme.duration.returns(duration);
     });
 
     it('Should allow schemes to be started', async () => {
@@ -72,7 +75,7 @@ describe('Scheme Manager', () => {
 
     it('Should allow schemes to be completed', async () => {
       await schemeManager.startScheme(1);
-      await scheme.mock.complete.returns();
+      await scheme.complete.returns();
 
       await wait(3600);
 

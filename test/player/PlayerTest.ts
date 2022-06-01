@@ -1,9 +1,13 @@
 import { expect } from 'chai';
+import { waffle } from 'hardhat';
+
 import { Cash, Player, PlayerStats } from '../../typechain';
 import { deployPlayerContract, getProvider } from '../helpers/contract';
 import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
 import PlayerStatsArtifact from '../../artifacts/contracts/player/PlayerStats.sol/PlayerStats.json';
-import { deployMockContract, MockContract } from 'ethereum-waffle';
+import { MockContract } from 'ethereum-waffle';
+
+const { deployMockContract } = waffle;
 
 const [alice, bob] = getProvider().getWallets();
 
@@ -22,7 +26,7 @@ describe('Player', () => {
 
   describe('Player creation', () => {
     it('Should allow creation of a player', async () => {
-      await playerStats.mock.createBasePlayer.withArgs(alice.address).returns();
+      await playerStats.createBasePlayer.withArgs(alice.address).returns();
 
       await player.create();
 
@@ -33,7 +37,7 @@ describe('Player', () => {
 
     describe('Restrictions', () => {
       it('Should prevent creating the same player twice', async () => {
-        await playerStats.mock.createBasePlayer.withArgs(alice.address).returns();
+        await playerStats.createBasePlayer.withArgs(alice.address).returns();
 
         await player.create();
         await expect(player.create()).to.be.revertedWith('Account already exists');
@@ -45,7 +49,7 @@ describe('Player', () => {
     let bobConnectedPlayer: Player;
 
     beforeEach(async () => {
-      await playerStats.mock.createBasePlayer.withArgs(alice.address).returns();
+      await playerStats.createBasePlayer.withArgs(alice.address).returns();
       await player.create();
 
       bobConnectedPlayer = (await player.connect(bob)) as Player;

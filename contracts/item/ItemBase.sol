@@ -1,29 +1,31 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: ISC
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 // todo add minter
-contract ItemBase is ERC721, Ownable {
+contract ItemBase is ERC1155, Ownable {
     event ItemMinted(address who, uint256 amount, uint256 when);
 
-    uint256 nextItemId;
+    uint256 nextItemId = 0;
 
-    constructor(string memory name, string memory symbol) public ERC721(name, symbol) {
-        nextItemId = 0;
+    constructor() ERC1155("https://game.example/api/item/{id}.json") {
     }
 
-    function mint(address _who, uint256 _amount) public {
+    function mint(address _who, uint256 _id, uint256 _amount) public {
         emit ItemMinted(_who, _amount, block.timestamp);
 
-        for (uint256 i = 0; i < _amount; i++) {
-            _safeMint(_who, nextItemId);
-            nextItemId++;
-        }
+        super._mint(_who, _id, _amount, "");
     }
 
     // todo this can only be called if they own the item
-    function destroy(uint256 itemId) public {
-        _burn(itemId);
+    function destroy(address _who, uint256 _itemId, uint256 _amount) public {
+        _burn(_who, _itemId, _amount);
+    }
+
+    function createNewItem() public onlyOwner {
+
     }
 }

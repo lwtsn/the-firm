@@ -1,4 +1,4 @@
-import { deployContract, MockProvider } from 'ethereum-waffle';
+import { MockProvider } from 'ethereum-waffle';
 import PlayerArtifact from '../../artifacts/contracts/player/Player.sol/Player.json';
 import PlayerStatsArtifact from '../../artifacts/contracts/player/PlayerStats.sol/PlayerStats.json';
 import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
@@ -8,10 +8,12 @@ import TrainingArtifact from '../../artifacts/contracts/training/Training.sol/Tr
 import JobArtifact from '../../artifacts/contracts/jobs/Jobs.sol/Jobs.json';
 import TreasuryArtifact from '../../artifacts/contracts/player/Treasury.sol/Treasury.json';
 
-import { SchemeManager, Cash, Player, PlayerStats, Shop, Training, Treasury, Jobs } from '../../typechain';
+import { Cash, Jobs, Player, PlayerStats, SchemeManager, Shop, TestScheme, Training, Treasury } from '../../typechain';
 
 import { Signer } from 'ethers';
-import { ethers } from 'hardhat';
+import { ethers, waffle } from 'hardhat';
+
+const { deployContract } = waffle;
 
 let provider: MockProvider;
 
@@ -26,7 +28,7 @@ export async function getAccounts() {
   return await ethers.getSigners();
 }
 
-export async function deploySchemesContract(signer: Signer) {
+export async function deploySchemesContract(signer: Signer): Promise<SchemeManager> {
   return (await deployContract(signer, SchemeManagerArtifact)) as SchemeManager;
 }
 
@@ -53,6 +55,7 @@ export async function deployTrainingContract(signer: Signer) {
 export async function deployTreasuryContract(signer: Signer) {
   return (await deployContract(signer, TreasuryArtifact)) as Treasury;
 }
+
 export async function deployJobContract(signer: Signer) {
   return (await deployContract(signer, JobArtifact)) as Jobs;
 }

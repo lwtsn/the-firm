@@ -7,16 +7,16 @@ import { BigNumber } from 'ethers';
 
 const [alice] = getProvider().getWallets();
 
-describe('Wooden Stick', () => {
-  let woodenStick: WeaponBase;
-
-  beforeEach(async () => {
-    woodenStick = (await deployContract(alice, WeaponBaseArtifact, ['Wooden Stick', 'WdnStk', 20])) as WeaponBase;
-  });
-
-  it('Should allow creation of a player', async () => {
-    await woodenStick.name().then((name: string) => expect(name).to.eq('Wooden Stick'));
-    await woodenStick.symbol().then((name: string) => expect(name).to.eq('WdnStk'));
-    await woodenStick.damageBoost().then((name: BigNumber) => expect(name).to.eq(20));
-  });
-});
+// xdescribe('Wooden Stick', () => {
+//   let woodenStick: WeaponBase;
+//
+//   beforeEach(async () => {
+//     woodenStick = (await deployContract(alice, WeaponBaseArtifact, ['Wooden Stick', 'WdnStk', 20])) as WeaponBase;
+//   });
+//
+//   it('Should allow creation of a player', async () => {
+//     await woodenStick.name().then((name: string) => expect(name).to.eq('Wooden Stick'));
+//     await woodenStick.symbol().then((name: string) => expect(name).to.eq('WdnStk'));
+//     await woodenStick.damageBoost().then((name: BigNumber) => expect(name).to.eq(20));
+//   });
+// });

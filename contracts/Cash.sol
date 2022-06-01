@@ -1,4 +1,6 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: ISC
+
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -7,7 +9,7 @@ contract Cash is AccessControl, ERC20 {
     bytes32 public constant ADMIN = keccak256("ADMIN");
     bytes32 public constant CASH_MINTER = keccak256("CASH_MINTER");
 
-    constructor() public ERC20("CASH", "CA$H") {
+    constructor() ERC20("CASH", "CA$H") {
         _setupRole(ADMIN, msg.sender);
         _setRoleAdmin(CASH_MINTER, ADMIN);
     }

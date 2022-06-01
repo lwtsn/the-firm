@@ -1,4 +1,6 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: ISC
+
+pragma solidity ^0.8.0;
 
 import "../utils/Random.sol";
 import "../Cash.sol";
@@ -24,7 +26,7 @@ abstract contract BaseScheme {
         uint256 _duration,
         uint256 _experience,
         uint256 _successChance
-    ) public {
+    ) {
         duration = _duration;
         experience = _experience;
         successChance = _successChance;

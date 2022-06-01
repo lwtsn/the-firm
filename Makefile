@@ -1,7 +1,7 @@
 .PHONY : typechain compile test compile-clean console run prettier integration
 
 typechain:
-	./node_modules/.bin/typechain --target ethers-v5 --outDir typechain './artifacts/*.json'
+	npx hardhat typechain
 
 compile:
 	npx hardhat compile
@@ -13,7 +13,7 @@ compile-clean:
 	make compile
 
 test:
-	npm run-script test test/job/JobTest.ts
+	npm run-script test
 
 run-node:
 	@npx hardhat node

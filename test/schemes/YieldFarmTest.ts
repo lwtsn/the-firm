@@ -1,4 +1,5 @@
-import { deployContract, deployMockContract, MockContract } from 'ethereum-waffle';
+import { waffle } from 'hardhat';
+
 import { Cash, Random, Treasury, YieldFarm } from '../../typechain';
 import RandomArtifact from '../../artifacts/contracts/utils/Random.sol/Random.json';
 import YieldFarmArtifact from '../../artifacts/contracts/Schemes/YieldFarm.sol/YieldFarm.json';
@@ -8,6 +9,9 @@ import TreasuryArtifact from '../../artifacts/contracts/player/Treasury.sol/Trea
 import { getProvider } from '../helpers/contract';
 import { MAX_INT } from '../helpers/numbers';
 import { expect } from 'chai';
+import { MockContract } from 'ethereum-waffle';
+
+const { deployMockContract, deployContract } = waffle;
 
 const [alice] = getProvider().getWallets();
 
@@ -51,9 +55,9 @@ describe('Yield farm', () => {
   });
 
   it('Should reward an amount of Cash when successful', async () => {
-    await random.mock.random.withArgs(100).returns(49);
-    await cash.mock.mint.withArgs(yieldFarm.address, 33).returns();
-    await treasury.mock.depositCashTo.withArgs(alice.address, 33).returns();
+    await random.random.withArgs(100).returns(49);
+    await cash.mint.withArgs(yieldFarm.address, 33).returns();
+    await treasury.depositCashTo.withArgs(alice.address, 33).returns();
 
     await yieldFarm.complete(alice.address);
   });

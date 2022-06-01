@@ -1,6 +1,8 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: ISC
 
-import "@openzeppelin/contracts/math/SafeMath.sol";
+pragma solidity ^0.8.0;
+
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "./BaseScheme.sol";
 
 contract SchemeManager {
@@ -27,14 +29,14 @@ contract SchemeManager {
 
     mapping(uint256 => Scheme) public schemes;
 
-    constructor() public {
+    constructor() {
         nextSchemeId = 1;
     }
 
     function addScheme(address _schemeAddress) public {
         emit SchemeAdded(_schemeAddress, nextSchemeId, block.timestamp);
 
-        schemes[nextSchemeId] = Scheme({schemeAddress: _schemeAddress, isScheme: true});
+        schemes[nextSchemeId] = Scheme({schemeAddress : _schemeAddress, isScheme : true});
 
         nextSchemeId = nextSchemeId.add(1);
     }
@@ -105,25 +107,25 @@ contract SchemeManager {
     }
 
     function getOngoingScheme(address _who)
-        public
-        view
-        returns (
-            bool _isOngoing,
-            uint256 _schemeId,
-            address _schemeAddress,
-            uint256 _timeStarted,
-            uint256 _timeCompleting
-        )
+    public
+    view
+    returns (
+        bool _isOngoing,
+        uint256 _schemeId,
+        address _schemeAddress,
+        uint256 _timeStarted,
+        uint256 _timeCompleting
+    )
     {
         if (hasOngoingScheme[_who]) {
             uint256 schemeId = ongoingSchemes[_who].schemeId;
 
             return (
-                true,
-                schemeId,
-                schemes[schemeId].schemeAddress,
-                ongoingSchemes[_who].timeStarted,
-                ongoingSchemes[_who].timeCompleting
+            true,
+            schemeId,
+            schemes[schemeId].schemeAddress,
+            ongoingSchemes[_who].timeStarted,
+            ongoingSchemes[_who].timeCompleting
             );
         }
         return (false, 0, address(0), 0, 0);

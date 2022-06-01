@@ -1,4 +1,6 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: ISC
+
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -8,10 +10,10 @@ import "./player/Treasury.sol";
 contract Shop is Ownable {
     using SafeMath for uint256;
 
-    event ItemAdded(address itemAddress, uint256 price, uint256 when);
-    event ItemUpdated(address itemAddress, uint256 price, uint256 when);
-    event ItemRemoved(address itemAddress, uint256 when);
-    event ItemPurchased(address who, address itemAddress, uint256 amount, uint256 when);
+    event ItemAdded(uint256 itemId, uint256 price, uint256 when);
+    event ItemUpdated(uint256 itemId, uint256 price, uint256 when);
+    event ItemRemoved(uint256 itemId, uint256 when);
+    event ItemPurchased(address who, uint256 itemId, uint256 amount, uint256 when);
 
     address treasuryContract;
 
@@ -20,53 +22,53 @@ contract Shop is Ownable {
         uint256 listPointer;
     }
 
-    mapping(address => Item) public itemStructs;
-    address[] public itemList;
+    mapping(uint256 => Item) public itemStructs;
+    uint256[] public itemList;
 
     function setTreasuryContract(address _treasuryContractAddress) public {
         treasuryContract = _treasuryContractAddress;
     }
 
-    function list(address _itemAddress, uint256 _itemPrice) public {
-        require(false == isEntity(_itemAddress), "Item already exists");
+    function list(uint256 _itemId, uint256 _itemPrice) public {
+        require(false == isEntity(_itemId), "Item already exists");
 
-        itemStructs[_itemAddress] = Item({price: _itemPrice, listPointer: itemList.length});
+        itemStructs[_itemId] = Item({price : _itemPrice, listPointer : itemList.length});
 
-        itemList.push(_itemAddress);
+        itemList.push(_itemId);
 
-        emit ItemAdded(_itemAddress, _itemPrice, block.timestamp);
+        emit ItemAdded(_itemId, _itemPrice, block.timestamp);
     }
 
-    function update(address _itemAddress, uint256 _itemPrice) public {
-        require(isEntity(_itemAddress), "Item not found");
+    function update(uint256 _itemId, uint256 _itemPrice) public {
+        require(isEntity(_itemId), "Item not found");
 
-        itemStructs[_itemAddress].price = _itemPrice;
+        itemStructs[_itemId].price = _itemPrice;
 
-        emit ItemUpdated(_itemAddress, _itemPrice, block.timestamp);
+        emit ItemUpdated(_itemId, _itemPrice, block.timestamp);
     }
 
-    function remove(address _itemAddress) public {
-        require(isEntity(_itemAddress), "Item not found");
+    function remove(uint256 _itemId) public {
+        require(isEntity(_itemId), "Item not found");
 
-        uint256 rowToDelete = itemStructs[_itemAddress].listPointer;
+        uint256 rowToDelete = itemStructs[_itemId].listPointer;
 
         // If length is  1 or the row to delete is the final row we will just remove the record
         if (itemList.length > 1 && rowToDelete != itemList.length - 1) {
             // last row in list
-            address rowToMove = itemList[itemList.length - 1];
+            uint256 rowToMove = itemList[itemList.length - 1];
 
             // swap delete row with row ot move
             itemStructs[rowToMove].listPointer = rowToDelete;
         }
 
         itemList.pop();
-        delete itemStructs[_itemAddress];
+        delete itemStructs[_itemId];
 
-        emit ItemRemoved(_itemAddress, block.timestamp);
+        emit ItemRemoved(_itemId, block.timestamp);
     }
 
-    function purchase(address _itemAddress, uint256 _amount) public {
-        Item memory itemListing = itemStructs[_itemAddress];
+    function purchase(uint256 _itemId, uint256 _amount) public {
+        Item memory itemListing = itemStructs[_itemId];
 
         uint256 balance = Treasury(treasuryContract).balances(msg.sender);
         uint256 totalCost = itemListing.price.mul(_amount);
@@ -74,32 +76,34 @@ contract Shop is Ownable {
         require(balance >= totalCost, "Not enough funds");
 
         Treasury(treasuryContract).spendCash(msg.sender, totalCost);
-        ItemBase(_itemAddress).mint(msg.sender, _amount);
 
-        emit ItemPurchased(msg.sender, _itemAddress, _amount, block.timestamp);
+        // todo change this
+        ItemBase(address(0)).mint(msg.sender, _itemId, _amount);
+
+        emit ItemPurchased(msg.sender, _itemId, _amount, block.timestamp);
     }
 
     function getItemCount() public view returns (uint256 itemCount) {
         return itemList.length;
     }
 
-    function isEntity(address _itemAddress) public view returns (bool) {
+    function isEntity(uint256 _itemId) public view returns (bool) {
         if (itemList.length == 0) {
             return false;
         }
 
-        return itemList[itemStructs[_itemAddress].listPointer] == _itemAddress;
+        return itemList[itemStructs[_itemId].listPointer] == _itemId;
     }
 
-    function getItems() public view returns (address[] memory, uint256[] memory) {
-        address[] memory itemAddresses = new address[](itemList.length);
+    function getItems() public view returns (uint256[] memory, uint256[] memory) {
+        uint256[] memory itemIds = new uint256[](itemList.length);
         uint256[] memory itemPrices = new uint256[](itemList.length);
 
         for (uint256 i = 0; i < itemList.length; i++) {
-            itemAddresses[i] = itemList[i];
+            itemIds[i] = itemList[i];
             itemPrices[i] = itemStructs[itemList[i]].price;
         }
 
-        return (itemAddresses, itemPrices);
+        return (itemIds, itemPrices);
     }
 }

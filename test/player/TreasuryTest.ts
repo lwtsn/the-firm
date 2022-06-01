@@ -1,11 +1,15 @@
 import { expect } from 'chai';
+import { waffle } from 'hardhat';
+
 import { Cash, Treasury } from '../../typechain';
 import { deployTreasuryContract, getProvider } from '../helpers/contract';
 import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
 
 import { oneEther } from '../helpers/numbers';
-import { deployMockContract, MockContract } from 'ethereum-waffle';
+import { MockContract } from 'ethereum-waffle';
 import { BigNumber } from 'ethers';
+
+const { deployMockContract } = waffle;
 
 const [alice, bob] = getProvider().getWallets();
 
@@ -32,8 +36,8 @@ describe('Treasury', () => {
     });
 
     it('Should allow depositing of cash', async () => {
-      await cash.mock.transferFrom.withArgs(alice.address, treasury.address, oneEther.mul(100)).returns(true);
-      await cash.mock.balanceOf.withArgs(alice.address).returns(oneEther.mul(100));
+      await cash.transferFrom.withArgs(alice.address, treasury.address, oneEther.mul(100)).returns(true);
+      await cash.balanceOf.withArgs(alice.address).returns(oneEther.mul(100));
 
       await treasury.depositCash(oneEther.mul(100));
 
@@ -43,9 +47,9 @@ describe('Treasury', () => {
     });
 
     it('Should allow cash spending by Cash Spender', async () => {
-      await cash.mock.transferFrom.withArgs(alice.address, treasury.address, oneEther.mul(100)).returns(true);
-      await cash.mock.balanceOf.withArgs(alice.address).returns(oneEther.mul(100));
-      await cash.mock.burn.withArgs(oneEther.mul(50)).returns();
+      await cash.transferFrom.withArgs(alice.address, treasury.address, oneEther.mul(100)).returns(true);
+      await cash.balanceOf.withArgs(alice.address).returns(oneEther.mul(100));
+      await cash.burn.withArgs(oneEther.mul(50)).returns();
 
       await treasury.depositCash(oneEther.mul(100));
 
@@ -64,7 +68,7 @@ describe('Treasury', () => {
       });
 
       it('Should prevent deposits if balance is insufficient', async () => {
-        await cash.mock.balanceOf.withArgs(alice.address).returns(oneEther.mul(50));
+        await cash.balanceOf.withArgs(alice.address).returns(oneEther.mul(50));
 
         await expect(treasury.depositCash(oneEther.mul(100))).to.be.revertedWith('Insufficient funds');
 

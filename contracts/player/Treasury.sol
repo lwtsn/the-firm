@@ -1,7 +1,9 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: ISC
+
+pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "../Cash.sol";
 
@@ -14,7 +16,7 @@ contract Treasury is AccessControl {
     address private cashAddress;
     mapping(address => uint256) public balances;
 
-    constructor() public {
+    constructor() {
         _setupRole(ADMIN, msg.sender);
         _setRoleAdmin(CASH_SPENDER, ADMIN);
     }

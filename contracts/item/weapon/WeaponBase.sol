@@ -1,4 +1,6 @@
-pragma solidity ^0.6.0;
+// SPDX-License-Identifier: ISC
+
+pragma solidity ^0.8.0;
 
 import "../ItemBase.sol";
 
@@ -10,7 +12,7 @@ contract WeaponBase is ItemBase {
         string memory _name,
         string memory _symbol,
         uint256 _damageBoost
-    ) public ItemBase(_name, _symbol) {
+    ) ItemBase() {
         nextItemId = 0;
         damageBoost = _damageBoost;
     }
