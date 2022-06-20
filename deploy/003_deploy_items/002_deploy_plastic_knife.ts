@@ -1,7 +1,3 @@
-import { HardhatRuntimeEnvironment } from 'hardhat/types';
-import { DeployFunction } from 'hardhat-deploy/types';
-import { WEAPON_BASE } from '../constants';
-
 import { SHOP } from '../constants';
 import { oneEther } from '../../test/helpers/numbers';
 import { deployWeapon } from './deploy_weapon';

@@ -11,8 +11,9 @@ export const SCHEME_TEST = 'TestScheme';
 export const SHOP = 'Shop';
 export const TREASURY = 'Treasury';
 export const TRAINING = 'Training';
+export const RANDOM = 'Random';
 
-export const WEAPON_BASE = 'WeaponBase';
+export const ITEM_BASE = 'ItemBase';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {};
 

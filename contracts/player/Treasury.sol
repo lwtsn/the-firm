@@ -29,24 +29,10 @@ contract Treasury is AccessControl {
         grantRole(CASH_SPENDER, _who);
     }
 
-    function depositCash(uint256 _amount) public {
-        require(Cash(cashAddress).balanceOf(msg.sender) >= _amount, "Insufficient funds");
-
-        Cash(cashAddress).transferFrom(msg.sender, address(this), _amount);
-        balances[msg.sender] = balances[msg.sender].add(_amount);
-    }
-
-    function depositCashTo(address _who, uint256 _amount) public {
-        require(Cash(cashAddress).balanceOf(msg.sender) >= _amount, "Insufficient funds");
-
-        Cash(cashAddress).transferFrom(msg.sender, address(this), _amount);
-        balances[_who] = balances[_who].add(_amount);
-    }
-
     function spendCash(address _who, uint256 _amount) public onlyCashSpender {
-        require(balances[_who] >= _amount);
+        require(Cash(cashAddress).balanceOf(tx.origin) >= _amount, "Insufficient funds");
 
-        balances[_who] = balances[_who].sub(_amount);
+        Cash(cashAddress).transferFrom(tx.origin, address(this), _amount);
 
         Cash(cashAddress).burn(_amount);
     }

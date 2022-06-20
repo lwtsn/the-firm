@@ -7,6 +7,8 @@ import "./BaseScheme.sol";
 
 contract SchemeManager {
     using SafeMath for uint256;
+    uint256 constant MAX_UINT = 2**256 - 1;
+
 
     event SchemeAdded(address schemeAddress, uint256 id, uint256 when);
     event SchemeStarted(address schemeAddress, address who, uint256 when);
@@ -23,6 +25,11 @@ contract SchemeManager {
     }
 
     uint256 public nextSchemeId;
+
+    address internal randomNumberGenerator;
+    address internal cashContract;
+    address internal treasuryAddress;
+    address internal playerStatsAddress;
 
     mapping(address => OngoingScheme) internal ongoingSchemes;
     mapping(address => bool) internal hasOngoingScheme;
@@ -72,16 +79,18 @@ contract SchemeManager {
         complete(msg.sender, schemeId);
     }
 
-    function listSchemes() public view returns (bool[] memory _schemes) {
+    function listSchemes() public view returns (bool[] memory _schemes, address[] memory _schemeAddress) {
         bool[] memory activeSchemes = new bool[](nextSchemeId);
+        address[] memory addresses = new address[](nextSchemeId);
 
         for (uint256 i = 0; i < nextSchemeId; i++) {
             if (schemes[i].isScheme) {
                 activeSchemes[i] = true;
+                addresses[i] = schemes[i].schemeAddress;
             }
         }
 
-        return activeSchemes;
+        return (activeSchemes, addresses);
     }
 
     function start(address _who, uint256 _schemeId) internal {
@@ -129,5 +138,23 @@ contract SchemeManager {
             );
         }
         return (false, 0, address(0), 0, 0);
+    }
+
+
+    function setRandomNumberGenerator(address _randomNumberGenerator) public {
+        randomNumberGenerator = _randomNumberGenerator;
+    }
+
+    function setCashContract(address _cashContractAddress) public {
+        cashContract = _cashContractAddress;
+        Cash(cashContract).approve(treasuryAddress, MAX_UINT);
+    }
+
+    function setTreasury(address _treasuryAddress) public {
+        treasuryAddress = _treasuryAddress;
+    }
+
+    function setPlayerStats(address _playerStatsAddress) public {
+        playerStatsAddress = _playerStatsAddress;
     }
 }

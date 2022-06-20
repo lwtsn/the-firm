@@ -15,7 +15,8 @@ contract Shop is Ownable {
     event ItemRemoved(uint256 itemId, uint256 when);
     event ItemPurchased(address who, uint256 itemId, uint256 amount, uint256 when);
 
-    address treasuryContract;
+    address public treasuryContract;
+    address public itemContractAddress;
 
     struct Item {
         uint256 price;
@@ -25,11 +26,15 @@ contract Shop is Ownable {
     mapping(uint256 => Item) public itemStructs;
     uint256[] public itemList;
 
-    function setTreasuryContract(address _treasuryContractAddress) public {
+    function setTreasuryContract(address _treasuryContractAddress) public onlyOwner {
         treasuryContract = _treasuryContractAddress;
     }
 
-    function list(uint256 _itemId, uint256 _itemPrice) public {
+    function setItemContract(address _itemContractAddress) public onlyOwner {
+        itemContractAddress = _itemContractAddress;
+    }
+
+    function list(uint256 _itemId, uint256 _itemPrice) public onlyOwner {
         require(false == isEntity(_itemId), "Item already exists");
 
         itemStructs[_itemId] = Item({price : _itemPrice, listPointer : itemList.length});
@@ -39,7 +44,7 @@ contract Shop is Ownable {
         emit ItemAdded(_itemId, _itemPrice, block.timestamp);
     }
 
-    function update(uint256 _itemId, uint256 _itemPrice) public {
+    function update(uint256 _itemId, uint256 _itemPrice) public onlyOwner {
         require(isEntity(_itemId), "Item not found");
 
         itemStructs[_itemId].price = _itemPrice;
@@ -47,7 +52,7 @@ contract Shop is Ownable {
         emit ItemUpdated(_itemId, _itemPrice, block.timestamp);
     }
 
-    function remove(uint256 _itemId) public {
+    function remove(uint256 _itemId) public onlyOwner {
         require(isEntity(_itemId), "Item not found");
 
         uint256 rowToDelete = itemStructs[_itemId].listPointer;
@@ -68,17 +73,13 @@ contract Shop is Ownable {
     }
 
     function purchase(uint256 _itemId, uint256 _amount) public {
-        Item memory itemListing = itemStructs[_itemId];
+        Item memory itemListing = getItem(_itemId);
 
-        uint256 balance = Treasury(treasuryContract).balances(msg.sender);
         uint256 totalCost = itemListing.price.mul(_amount);
-
-        require(balance >= totalCost, "Not enough funds");
 
         Treasury(treasuryContract).spendCash(msg.sender, totalCost);
 
-        // todo change this
-        ItemBase(address(0)).mint(msg.sender, _itemId, _amount);
+        ItemBase(itemContractAddress).mint(msg.sender, _itemId, _amount);
 
         emit ItemPurchased(msg.sender, _itemId, _amount, block.timestamp);
     }
@@ -100,10 +101,14 @@ contract Shop is Ownable {
         uint256[] memory itemPrices = new uint256[](itemList.length);
 
         for (uint256 i = 0; i < itemList.length; i++) {
-            itemIds[i] = itemList[i];
+            itemIds[i] = i;
             itemPrices[i] = itemStructs[itemList[i]].price;
         }
 
         return (itemIds, itemPrices);
+    }
+
+    function getItem(uint256 _itemId) public view returns (Item memory) {
+        return itemStructs[_itemId];
     }
 }

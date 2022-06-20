@@ -26,15 +26,22 @@ import type {
   OnEvent,
 } from "../../../common";
 
+export declare namespace ItemBase {
+  export type ItemStruct = { name: string };
+
+  export type ItemStructOutput = [string] & { name: string };
+}
+
 export interface WeaponBaseInterface extends utils.Interface {
   functions: {
     "balanceOf(address,uint256)": FunctionFragment;
     "balanceOfBatch(address[],uint256[])": FunctionFragment;
-    "createNewItem()": FunctionFragment;
+    "createNewItem(string)": FunctionFragment;
     "damageBoost()": FunctionFragment;
     "destroy(address,uint256,uint256)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "mint(address,uint256,uint256)": FunctionFragment;
+    "nextItemId()": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "safeBatchTransferFrom(address,address,uint256[],uint256[],bytes)": FunctionFragment;
@@ -43,6 +50,7 @@ export interface WeaponBaseInterface extends utils.Interface {
     "supportsInterface(bytes4)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "uri(uint256)": FunctionFragment;
+    "viewItem(uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -54,6 +62,7 @@ export interface WeaponBaseInterface extends utils.Interface {
       | "destroy"
       | "isApprovedForAll"
       | "mint"
+      | "nextItemId"
       | "owner"
       | "renounceOwnership"
       | "safeBatchTransferFrom"
@@ -62,6 +71,7 @@ export interface WeaponBaseInterface extends utils.Interface {
       | "supportsInterface"
       | "transferOwnership"
       | "uri"
+      | "viewItem"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -74,7 +84,7 @@ export interface WeaponBaseInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "createNewItem",
-    values?: undefined
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "damageBoost",
@@ -91,6 +101,10 @@ export interface WeaponBaseInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "mint",
     values: [string, BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nextItemId",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -118,6 +132,10 @@ export interface WeaponBaseInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(functionFragment: "uri", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "viewItem",
+    values: [BigNumberish]
+  ): string;
 
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
@@ -138,6 +156,7 @@ export interface WeaponBaseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "nextItemId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
@@ -164,6 +183,7 @@ export interface WeaponBaseInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "uri", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "viewItem", data: BytesLike): Result;
 
   events: {
     "ApprovalForAll(address,address,bool)": EventFragment;
@@ -294,6 +314,7 @@ export interface WeaponBase extends BaseContract {
     ): Promise<[BigNumber[]]>;
 
     createNewItem(
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -318,6 +339,8 @@ export interface WeaponBase extends BaseContract {
       _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    nextItemId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -360,6 +383,11 @@ export interface WeaponBase extends BaseContract {
     ): Promise<ContractTransaction>;
 
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<[string]>;
+
+    viewItem(
+      _itemId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[ItemBase.ItemStructOutput]>;
   };
 
   balanceOf(
@@ -375,6 +403,7 @@ export interface WeaponBase extends BaseContract {
   ): Promise<BigNumber[]>;
 
   createNewItem(
+    _name: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -399,6 +428,8 @@ export interface WeaponBase extends BaseContract {
     _amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  nextItemId(overrides?: CallOverrides): Promise<BigNumber>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -442,6 +473,11 @@ export interface WeaponBase extends BaseContract {
 
   uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+  viewItem(
+    _itemId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<ItemBase.ItemStructOutput>;
+
   callStatic: {
     balanceOf(
       account: string,
@@ -455,7 +491,7 @@ export interface WeaponBase extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber[]>;
 
-    createNewItem(overrides?: CallOverrides): Promise<void>;
+    createNewItem(_name: string, overrides?: CallOverrides): Promise<BigNumber>;
 
     damageBoost(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -478,6 +514,8 @@ export interface WeaponBase extends BaseContract {
       _amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    nextItemId(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -518,6 +556,11 @@ export interface WeaponBase extends BaseContract {
     ): Promise<void>;
 
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    viewItem(
+      _itemId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<ItemBase.ItemStructOutput>;
   };
 
   filters: {
@@ -599,6 +642,7 @@ export interface WeaponBase extends BaseContract {
     ): Promise<BigNumber>;
 
     createNewItem(
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -623,6 +667,8 @@ export interface WeaponBase extends BaseContract {
       _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    nextItemId(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -665,6 +711,11 @@ export interface WeaponBase extends BaseContract {
     ): Promise<BigNumber>;
 
     uri(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+
+    viewItem(
+      _itemId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -681,6 +732,7 @@ export interface WeaponBase extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     createNewItem(
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -705,6 +757,8 @@ export interface WeaponBase extends BaseContract {
       _amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    nextItemId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -748,6 +802,11 @@ export interface WeaponBase extends BaseContract {
 
     uri(
       arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    viewItem(
+      _itemId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };

@@ -4,5 +4,4 @@
 export * as scroungeForSatoshisSol from "./ScroungeForSatoshis.sol";
 export { BaseScheme__factory } from "./BaseScheme__factory";
 export { SchemeManager__factory } from "./SchemeManager__factory";
-export { TestScheme__factory } from "./TestScheme__factory";
 export { YieldFarm__factory } from "./YieldFarm__factory";

@@ -30,62 +30,21 @@ export interface BaseSchemeInterface extends utils.Interface {
     "complete(address)": FunctionFragment;
     "duration()": FunctionFragment;
     "getScheme()": FunctionFragment;
-    "setCashContract(address)": FunctionFragment;
-    "setPlayerStats(address)": FunctionFragment;
-    "setRandomNumberGenerator(address)": FunctionFragment;
-    "setTreasury(address)": FunctionFragment;
     "start(address)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic:
-      | "complete"
-      | "duration"
-      | "getScheme"
-      | "setCashContract"
-      | "setPlayerStats"
-      | "setRandomNumberGenerator"
-      | "setTreasury"
-      | "start"
+    nameOrSignatureOrTopic: "complete" | "duration" | "getScheme" | "start"
   ): FunctionFragment;
 
   encodeFunctionData(functionFragment: "complete", values: [string]): string;
   encodeFunctionData(functionFragment: "duration", values?: undefined): string;
   encodeFunctionData(functionFragment: "getScheme", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "setCashContract",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setPlayerStats",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "setRandomNumberGenerator",
-    values: [string]
-  ): string;
-  encodeFunctionData(functionFragment: "setTreasury", values: [string]): string;
   encodeFunctionData(functionFragment: "start", values: [string]): string;
 
   decodeFunctionResult(functionFragment: "complete", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "duration", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getScheme", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setCashContract",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setPlayerStats",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setRandomNumberGenerator",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "setTreasury",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "start", data: BytesLike): Result;
 
   events: {
@@ -159,26 +118,6 @@ export interface BaseScheme extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber, string] & { _duration: BigNumber; _name: string }>;
 
-    setCashContract(
-      _cashContractAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setPlayerStats(
-      _playerStatsAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setRandomNumberGenerator(
-      _randomNumberGenerator: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    setTreasury(
-      _treasuryAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     start(
       _who: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -196,26 +135,6 @@ export interface BaseScheme extends BaseContract {
     overrides?: CallOverrides
   ): Promise<[BigNumber, string] & { _duration: BigNumber; _name: string }>;
 
-  setCashContract(
-    _cashContractAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setPlayerStats(
-    _playerStatsAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setRandomNumberGenerator(
-    _randomNumberGenerator: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  setTreasury(
-    _treasuryAddress: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   start(
     _who: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -229,26 +148,6 @@ export interface BaseScheme extends BaseContract {
     getScheme(
       overrides?: CallOverrides
     ): Promise<[BigNumber, string] & { _duration: BigNumber; _name: string }>;
-
-    setCashContract(
-      _cashContractAddress: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setPlayerStats(
-      _playerStatsAddress: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setRandomNumberGenerator(
-      _randomNumberGenerator: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    setTreasury(
-      _treasuryAddress: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     start(_who: string, overrides?: CallOverrides): Promise<void>;
   };
@@ -287,26 +186,6 @@ export interface BaseScheme extends BaseContract {
 
     getScheme(overrides?: CallOverrides): Promise<BigNumber>;
 
-    setCashContract(
-      _cashContractAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setPlayerStats(
-      _playerStatsAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setRandomNumberGenerator(
-      _randomNumberGenerator: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    setTreasury(
-      _treasuryAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     start(
       _who: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -322,26 +201,6 @@ export interface BaseScheme extends BaseContract {
     duration(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getScheme(overrides?: CallOverrides): Promise<PopulatedTransaction>;
-
-    setCashContract(
-      _cashContractAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setPlayerStats(
-      _playerStatsAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setRandomNumberGenerator(
-      _randomNumberGenerator: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setTreasury(
-      _treasuryAddress: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
 
     start(
       _who: string,

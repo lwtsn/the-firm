@@ -60,8 +60,6 @@ export type { SchemeManager } from "./contracts/schemes/SchemeManager";
 export { SchemeManager__factory } from "./factories/contracts/schemes/SchemeManager__factory";
 export type { ScroungeForSatochis } from "./contracts/schemes/ScroungeForSatoshis.sol/ScroungeForSatochis";
 export { ScroungeForSatochis__factory } from "./factories/contracts/schemes/ScroungeForSatoshis.sol/ScroungeForSatochis__factory";
-export type { TestScheme } from "./contracts/schemes/TestScheme";
-export { TestScheme__factory } from "./factories/contracts/schemes/TestScheme__factory";
 export type { YieldFarm } from "./contracts/schemes/YieldFarm";
 export { YieldFarm__factory } from "./factories/contracts/schemes/YieldFarm__factory";
 export type { Shop } from "./contracts/Shop";

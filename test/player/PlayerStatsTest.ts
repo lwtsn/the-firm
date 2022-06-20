@@ -1,14 +1,18 @@
 import { expect } from 'chai';
 import { PlayerStats } from '../../typechain';
-import { deployPlayerStatsContract, getProvider } from '../helpers/contract';
+import { deployPlayerStatsContract, getAccounts } from '../helpers/contract';
 import { oneEther } from '../helpers/numbers';
-
-const [alice, bob] = getProvider().getWallets();
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 describe('Player Stats', () => {
+  let alice: SignerWithAddress;
+  let bob: SignerWithAddress;
+
   let playerStats: PlayerStats;
 
   beforeEach(async () => {
+    [alice, bob] = await getAccounts();
+
     playerStats = await deployPlayerStatsContract(alice);
     await playerStats.setPlayerManager(alice.address);
   });

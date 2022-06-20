@@ -1,14 +1,15 @@
 import { expect } from 'chai';
 import { Jobs } from '../../typechain';
-import { deployJobContract, getProvider } from '../helpers/contract';
+import { deployJobContract, getAccounts } from '../helpers/contract';
 import { BigNumber } from 'ethers';
-
-const [alice] = getProvider().getWallets();
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 describe('Jobs', () => {
   let job: Jobs;
+  let alice: SignerWithAddress;
 
   beforeEach(async () => {
+    [alice] = await getAccounts();
     job = await deployJobContract(alice);
   });
 

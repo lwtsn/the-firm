@@ -1,6 +1,6 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
-import { CASH, PLAYER_STATS, SCHEME_MANAGER } from '../constants';
+import { PLAYER, PLAYER_STATS } from '../constants';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { getNamedAccounts, deployments } = hre;
@@ -8,10 +8,8 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts();
 
-  const schemeManager = await deployments.get(SCHEME_MANAGER);
-
-  console.log('Setting Scheme Manager as Cash minter : ' + schemeManager.address);
-  await execute(CASH, { from: deployer, log: true }, 'setCashMinter', schemeManager.address);
+  console.log('Creating account... ');
+  await execute(PLAYER, { from: deployer, log: true }, 'create');
 };
 
 export default func;

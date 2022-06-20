@@ -34,6 +34,10 @@ export interface SchemeManagerInterface extends utils.Interface {
     "listSchemes()": FunctionFragment;
     "nextSchemeId()": FunctionFragment;
     "schemes(uint256)": FunctionFragment;
+    "setCashContract(address)": FunctionFragment;
+    "setPlayerStats(address)": FunctionFragment;
+    "setRandomNumberGenerator(address)": FunctionFragment;
+    "setTreasury(address)": FunctionFragment;
     "skipScheme()": FunctionFragment;
     "startScheme(uint256)": FunctionFragment;
   };
@@ -46,6 +50,10 @@ export interface SchemeManagerInterface extends utils.Interface {
       | "listSchemes"
       | "nextSchemeId"
       | "schemes"
+      | "setCashContract"
+      | "setPlayerStats"
+      | "setRandomNumberGenerator"
+      | "setTreasury"
       | "skipScheme"
       | "startScheme"
   ): FunctionFragment;
@@ -71,6 +79,19 @@ export interface SchemeManagerInterface extends utils.Interface {
     functionFragment: "schemes",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "setCashContract",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setPlayerStats",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setRandomNumberGenerator",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "setTreasury", values: [string]): string;
   encodeFunctionData(
     functionFragment: "skipScheme",
     values?: undefined
@@ -98,6 +119,22 @@ export interface SchemeManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "schemes", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setCashContract",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setPlayerStats",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setRandomNumberGenerator",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setTreasury",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "skipScheme", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "startScheme",
@@ -188,7 +225,9 @@ export interface SchemeManager extends BaseContract {
 
     listSchemes(
       overrides?: CallOverrides
-    ): Promise<[boolean[]] & { _schemes: boolean[] }>;
+    ): Promise<
+      [boolean[], string[]] & { _schemes: boolean[]; _schemeAddress: string[] }
+    >;
 
     nextSchemeId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -198,6 +237,26 @@ export interface SchemeManager extends BaseContract {
     ): Promise<
       [string, boolean] & { schemeAddress: string; isScheme: boolean }
     >;
+
+    setCashContract(
+      _cashContractAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setPlayerStats(
+      _playerStatsAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setRandomNumberGenerator(
+      _randomNumberGenerator: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setTreasury(
+      _treasuryAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     skipScheme(
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -231,7 +290,11 @@ export interface SchemeManager extends BaseContract {
     }
   >;
 
-  listSchemes(overrides?: CallOverrides): Promise<boolean[]>;
+  listSchemes(
+    overrides?: CallOverrides
+  ): Promise<
+    [boolean[], string[]] & { _schemes: boolean[]; _schemeAddress: string[] }
+  >;
 
   nextSchemeId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -239,6 +302,26 @@ export interface SchemeManager extends BaseContract {
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<[string, boolean] & { schemeAddress: string; isScheme: boolean }>;
+
+  setCashContract(
+    _cashContractAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setPlayerStats(
+    _playerStatsAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setRandomNumberGenerator(
+    _randomNumberGenerator: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setTreasury(
+    _treasuryAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   skipScheme(
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -267,7 +350,11 @@ export interface SchemeManager extends BaseContract {
       }
     >;
 
-    listSchemes(overrides?: CallOverrides): Promise<boolean[]>;
+    listSchemes(
+      overrides?: CallOverrides
+    ): Promise<
+      [boolean[], string[]] & { _schemes: boolean[]; _schemeAddress: string[] }
+    >;
 
     nextSchemeId(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -277,6 +364,26 @@ export interface SchemeManager extends BaseContract {
     ): Promise<
       [string, boolean] & { schemeAddress: string; isScheme: boolean }
     >;
+
+    setCashContract(
+      _cashContractAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setPlayerStats(
+      _playerStatsAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setRandomNumberGenerator(
+      _randomNumberGenerator: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setTreasury(
+      _treasuryAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     skipScheme(overrides?: CallOverrides): Promise<void>;
 
@@ -331,6 +438,26 @@ export interface SchemeManager extends BaseContract {
 
     schemes(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
+    setCashContract(
+      _cashContractAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setPlayerStats(
+      _playerStatsAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setRandomNumberGenerator(
+      _randomNumberGenerator: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setTreasury(
+      _treasuryAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     skipScheme(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -363,6 +490,26 @@ export interface SchemeManager extends BaseContract {
     schemes(
       arg0: BigNumberish,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    setCashContract(
+      _cashContractAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setPlayerStats(
+      _playerStatsAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setRandomNumberGenerator(
+      _randomNumberGenerator: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setTreasury(
+      _treasuryAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     skipScheme(

@@ -4,17 +4,20 @@ import { SchemeManager, YieldFarm } from '../../typechain';
 import BaseSchemeArtifact from '../../artifacts/contracts/schemes/BaseScheme.sol/BaseScheme.json';
 import { waffle } from 'hardhat';
 
-import { deploySchemesContract, getBlockTime, getProvider, wait } from '../helpers/contract';
+import { deploySchemesContract, getAccounts, getBlockTime, wait } from '../helpers/contract';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 const { deployMockContract } = waffle;
-
-const [alice] = getProvider().getWallets();
 
 describe('Scheme Manager', () => {
   let scheme: YieldFarm | MockContract;
   let schemeManager: SchemeManager;
 
+  let alice: SignerWithAddress;
+
   beforeEach(async () => {
+    [alice] = await getAccounts();
+
     scheme = await deployMockContract(alice, BaseSchemeArtifact.abi);
     schemeManager = await deploySchemesContract(alice);
   });
@@ -35,12 +38,14 @@ describe('Scheme Manager', () => {
     await schemeManager.addScheme(scheme2.address);
     await schemeManager.addScheme(scheme3.address);
 
-    await schemeManager.listSchemes().then((schemes: boolean[]) => {
-      expect(schemes[0]).to.be.false;
-      expect(schemes[1]).to.be.true;
-      expect(schemes[2]).to.be.true;
-      expect(schemes[3]).to.be.true;
-    });
+    await schemeManager
+      .listSchemes()
+      .then((schemes: [boolean[], string[]] & { _schemes: boolean[]; _schemeAddress: string[] }) => {
+        expect(schemes[0]).to.be.false;
+        expect(schemes[1]).to.be.true;
+        expect(schemes[2]).to.be.true;
+        expect(schemes[3]).to.be.true;
+      });
   });
 
   describe('Performing scheme', () => {

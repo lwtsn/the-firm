@@ -8,7 +8,7 @@ import TrainingArtifact from '../../artifacts/contracts/training/Training.sol/Tr
 import JobArtifact from '../../artifacts/contracts/jobs/Jobs.sol/Jobs.json';
 import TreasuryArtifact from '../../artifacts/contracts/player/Treasury.sol/Treasury.json';
 
-import { Cash, Jobs, Player, PlayerStats, SchemeManager, Shop, TestScheme, Training, Treasury } from '../../typechain';
+import { Cash, Jobs, Player, PlayerStats, SchemeManager, Shop, Training, Treasury } from '../../typechain';
 
 import { Signer } from 'ethers';
 import { ethers, waffle } from 'hardhat';
@@ -45,7 +45,7 @@ export async function deployPlayerStatsContract(signer: Signer) {
 }
 
 export async function deployCashContract(signer: Signer) {
-  return (await deployContract(signer, CashArtifact)) as Cash;
+  return (await deployContract(signer, CashArtifact, [])) as Cash;
 }
 
 export async function deployTrainingContract(signer: Signer) {

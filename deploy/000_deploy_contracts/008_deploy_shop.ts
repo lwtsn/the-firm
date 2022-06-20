@@ -1,10 +1,10 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
-import { SHOP } from '../constants';
+import { ITEM_BASE, SHOP } from '../constants';
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre;
-  const { deploy, log } = deployments;
+  const { deploy, log, execute, get } = deployments;
 
   const { deployer } = await getNamedAccounts();
 
@@ -13,6 +13,18 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     from: deployer,
     log: true,
   });
+
+  const itemBase = await get(ITEM_BASE);
+
+  await execute(
+    SHOP,
+    {
+      from: deployer,
+      log: true,
+    },
+    'setItemContract',
+    itemBase.address
+  );
 };
 
 export default func;

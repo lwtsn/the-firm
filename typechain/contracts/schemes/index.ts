@@ -5,5 +5,4 @@ import type * as scroungeForSatoshisSol from "./ScroungeForSatoshis.sol";
 export type { scroungeForSatoshisSol };
 export type { BaseScheme } from "./BaseScheme";
 export type { SchemeManager } from "./SchemeManager";
-export type { TestScheme } from "./TestScheme";
 export type { YieldFarm } from "./YieldFarm";

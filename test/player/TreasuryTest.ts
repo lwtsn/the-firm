@@ -1,23 +1,27 @@
 import { expect } from 'chai';
 import { waffle } from 'hardhat';
 
-import { Cash, Treasury } from '../../typechain';
-import { deployTreasuryContract, getProvider } from '../helpers/contract';
+import { Treasury } from '../../typechain';
+import { deployTreasuryContract, getAccounts } from '../helpers/contract';
 import CashArtifact from '../../artifacts/contracts/Cash.sol/Cash.json';
 
 import { oneEther } from '../helpers/numbers';
 import { MockContract } from 'ethereum-waffle';
 import { BigNumber } from 'ethers';
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 const { deployMockContract } = waffle;
 
-const [alice, bob] = getProvider().getWallets();
-
 describe('Treasury', () => {
-  let cash: Cash | MockContract;
+  let cash: MockContract;
   let treasury: Treasury;
 
+  let alice: SignerWithAddress;
+  let bob: SignerWithAddress;
+
   beforeEach(async () => {
+    [alice, bob] = await getAccounts();
+
     treasury = await deployTreasuryContract(alice);
     cash = await deployMockContract(alice, CashArtifact.abi);
 
@@ -35,29 +39,12 @@ describe('Treasury', () => {
       await treasury.setCashSpender(alice.address);
     });
 
-    it('Should allow depositing of cash', async () => {
-      await cash.transferFrom.withArgs(alice.address, treasury.address, oneEther.mul(100)).returns(true);
-      await cash.balanceOf.withArgs(alice.address).returns(oneEther.mul(100));
-
-      await treasury.depositCash(oneEther.mul(100));
-
-      await treasury.balances(alice.address).then((balance: BigNumber) => {
-        expect(balance).to.eq(oneEther.mul(100));
-      });
-    });
-
     it('Should allow cash spending by Cash Spender', async () => {
-      await cash.transferFrom.withArgs(alice.address, treasury.address, oneEther.mul(100)).returns(true);
-      await cash.balanceOf.withArgs(alice.address).returns(oneEther.mul(100));
-      await cash.burn.withArgs(oneEther.mul(50)).returns();
-
-      await treasury.depositCash(oneEther.mul(100));
+      await cash.mock.balanceOf.withArgs(alice.address).returns(oneEther.mul(100));
+      await cash.mock.transferFrom.withArgs(alice.address, treasury.address, oneEther.mul(50)).returns(true);
+      await cash.mock.burn.withArgs(oneEther.mul(50)).returns();
 
       await treasury.spendCash(alice.address, oneEther.mul(50));
-
-      await treasury.balances(alice.address).then((balance: BigNumber) => {
-        expect(balance).to.eq(oneEther.mul(50));
-      });
     });
 
     describe('Restrictions', async () => {
@@ -65,16 +52,6 @@ describe('Treasury', () => {
 
       beforeEach(async () => {
         bobConnectedTreasury = (await treasury.connect(bob)) as Treasury;
-      });
-
-      it('Should prevent deposits if balance is insufficient', async () => {
-        await cash.balanceOf.withArgs(alice.address).returns(oneEther.mul(50));
-
-        await expect(treasury.depositCash(oneEther.mul(100))).to.be.revertedWith('Insufficient funds');
-
-        await treasury.balances(alice.address).then((balance: BigNumber) => {
-          expect(balance).to.eq(0);
-        });
       });
 
       it('Should prevent cash spending by non Cash Spender', async () => {

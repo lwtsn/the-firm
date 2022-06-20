@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import { Cash } from '../typechain';
-import { deployCashContract, getProvider } from './helpers/contract';
-
-const [alice] = getProvider().getWallets();
+import { deployCashContract, getAccounts } from './helpers/contract';
 
 describe('Account', () => {
   let cash: Cash;
 
   beforeEach(async () => {
+    const [alice] = await getAccounts();
+
     cash = await deployCashContract(alice);
   });
 

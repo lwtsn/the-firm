@@ -1,26 +1,29 @@
-import { ItemBase, Shop, Treasury } from '../typechain';
-import { deployShopContract, getProvider } from './helpers/contract';
+import { Shop } from '../typechain';
+import { deployShopContract, getAccounts } from './helpers/contract';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import ItemArtifact from '../artifacts/contracts/item/ItemBase.sol/ItemBase.json';
 import TreasuryArtifact from '../artifacts/contracts/player/Treasury.sol/Treasury.json';
 import { oneEther } from './helpers/numbers';
 import { expect } from 'chai';
 import { BigNumber } from 'ethers';
-
-const [alice] = getProvider().getWallets();
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 describe('Shop', () => {
   let shop: Shop;
-  let item: ItemBase | MockContract;
-  let treasury: Treasury | MockContract;
+  let item: MockContract;
+  let treasury: MockContract;
+  let alice: SignerWithAddress;
 
   beforeEach(async () => {
+    [alice] = await getAccounts();
+
     shop = await deployShopContract(alice);
 
     item = await deployMockContract(alice, ItemArtifact.abi);
     treasury = await deployMockContract(alice, TreasuryArtifact.abi);
 
     await shop.setTreasuryContract(treasury.address);
+    await shop.setItemContract(item.address);
   });
 
   it('Should allow listing of items', async () => {
@@ -96,9 +99,9 @@ describe('Shop', () => {
       const addresses: string[] = items[0];
       const prices: string[] = items[1];
 
-      expect(addresses[0]).to.eq(item.address);
-      expect(addresses[1]).to.eq(item2.address);
-      expect(addresses[2]).to.eq(item3.address);
+      expect(addresses[0]).to.eq(0);
+      expect(addresses[1]).to.eq(1);
+      expect(addresses[2]).to.eq(2);
 
       expect(prices[0]).to.eq(oneEther.mul(100));
       expect(prices[1]).to.eq(oneEther.mul(500));
@@ -108,17 +111,16 @@ describe('Shop', () => {
 
   describe('Item purchasing', () => {
     it('Should allow purchasing of registered items', async () => {
-      await treasury.balances.withArgs(alice.address).returns(oneEther.mul(200));
-      await treasury.spendCash.withArgs(alice.address, oneEther.mul(100)).returns();
-      await item.mint.withArgs(alice.address, 1).returns();
+      await treasury.mock.spendCash.withArgs(alice.address, oneEther.mul(100)).returns();
+      await item.mock.mint.withArgs(alice.address, 0, 1).returns();
 
-      await shop.list(item.address, oneEther.mul(100));
+      await shop.list(0, oneEther.mul(100));
 
-      await shop.purchase(item.address, 1);
+      await shop.purchase(0, 1);
     });
 
-    it('Should prevent purchasing items if player balance is too low', async () => {
-      await treasury.balances.withArgs(alice.address).returns(oneEther.mul(200));
+    xit('Should prevent purchasing items if player balance is too low', async () => {
+      await treasury.mock.balances.withArgs(alice.address).returns(oneEther.mul(200));
 
       await shop.list(item.address, oneEther.mul(100));
 

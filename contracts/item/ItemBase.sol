@@ -9,10 +9,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract ItemBase is ERC1155, Ownable {
     event ItemMinted(address who, uint256 amount, uint256 when);
 
-    uint256 nextItemId = 0;
+    uint256 public nextItemId = 0;
 
-    constructor() ERC1155("https://game.example/api/item/{id}.json") {
+    struct Item {
+        string name;
     }
+
+    mapping(uint256 => Item) items;
+
+    constructor() ERC1155("https://game.example/api/item/{id}.json") {}
 
     function mint(address _who, uint256 _id, uint256 _amount) public {
         emit ItemMinted(_who, _amount, block.timestamp);
@@ -25,7 +30,19 @@ contract ItemBase is ERC1155, Ownable {
         _burn(_who, _itemId, _amount);
     }
 
-    function createNewItem() public onlyOwner {
+    function createNewItem(string memory _name) public onlyOwner returns (uint256 itemId) {
+        items[nextItemId] = Item({
+        name : _name
+        });
 
+        nextItemId += 1;
+
+    return nextItemId;
+    }
+
+    function viewItem(uint256 _itemId) public view returns (Item memory) {
+        return (
+        items[_itemId]
+        );
     }
 }

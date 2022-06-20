@@ -32,8 +32,6 @@ export interface TreasuryInterface extends utils.Interface {
     "CASH_SPENDER()": FunctionFragment;
     "DEFAULT_ADMIN_ROLE()": FunctionFragment;
     "balances(address)": FunctionFragment;
-    "depositCash(uint256)": FunctionFragment;
-    "depositCashTo(address,uint256)": FunctionFragment;
     "getRoleAdmin(bytes32)": FunctionFragment;
     "grantRole(bytes32,address)": FunctionFragment;
     "hasRole(bytes32,address)": FunctionFragment;
@@ -51,8 +49,6 @@ export interface TreasuryInterface extends utils.Interface {
       | "CASH_SPENDER"
       | "DEFAULT_ADMIN_ROLE"
       | "balances"
-      | "depositCash"
-      | "depositCashTo"
       | "getRoleAdmin"
       | "grantRole"
       | "hasRole"
@@ -74,14 +70,6 @@ export interface TreasuryInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "balances", values: [string]): string;
-  encodeFunctionData(
-    functionFragment: "depositCash",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "depositCashTo",
-    values: [string, BigNumberish]
-  ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
     values: [BytesLike]
@@ -129,14 +117,6 @@ export interface TreasuryInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "balances", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "depositCash",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "depositCashTo",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
     data: BytesLike
@@ -245,17 +225,6 @@ export interface Treasury extends BaseContract {
 
     balances(arg0: string, overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    depositCash(
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    depositCashTo(
-      _who: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<[string]>;
 
     grantRole(
@@ -312,17 +281,6 @@ export interface Treasury extends BaseContract {
 
   balances(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-  depositCash(
-    _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  depositCashTo(
-    _who: string,
-    _amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
   getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
   grantRole(
@@ -378,17 +336,6 @@ export interface Treasury extends BaseContract {
     DEFAULT_ADMIN_ROLE(overrides?: CallOverrides): Promise<string>;
 
     balances(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
-
-    depositCash(
-      _amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
-    depositCashTo(
-      _who: string,
-      _amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
 
     getRoleAdmin(role: BytesLike, overrides?: CallOverrides): Promise<string>;
 
@@ -479,17 +426,6 @@ export interface Treasury extends BaseContract {
 
     balances(arg0: string, overrides?: CallOverrides): Promise<BigNumber>;
 
-    depositCash(
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    depositCashTo(
-      _who: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     getRoleAdmin(
       role: BytesLike,
       overrides?: CallOverrides
@@ -553,17 +489,6 @@ export interface Treasury extends BaseContract {
     balances(
       arg0: string,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    depositCash(
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    depositCashTo(
-      _who: string,
-      _amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     getRoleAdmin(

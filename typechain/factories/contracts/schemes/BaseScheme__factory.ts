@@ -108,58 +108,6 @@ const _abi = [
     inputs: [
       {
         internalType: "address",
-        name: "_cashContractAddress",
-        type: "address",
-      },
-    ],
-    name: "setCashContract",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_playerStatsAddress",
-        type: "address",
-      },
-    ],
-    name: "setPlayerStats",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_randomNumberGenerator",
-        type: "address",
-      },
-    ],
-    name: "setRandomNumberGenerator",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_treasuryAddress",
-        type: "address",
-      },
-    ],
-    name: "setTreasury",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
         name: "_who",
         type: "address",
       },

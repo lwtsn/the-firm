@@ -26,11 +26,22 @@ import type {
   OnEvent,
 } from "../common";
 
+export declare namespace Shop {
+  export type ItemStruct = { price: BigNumberish; listPointer: BigNumberish };
+
+  export type ItemStructOutput = [BigNumber, BigNumber] & {
+    price: BigNumber;
+    listPointer: BigNumber;
+  };
+}
+
 export interface ShopInterface extends utils.Interface {
   functions: {
+    "getItem(uint256)": FunctionFragment;
     "getItemCount()": FunctionFragment;
     "getItems()": FunctionFragment;
     "isEntity(uint256)": FunctionFragment;
+    "itemContractAddress()": FunctionFragment;
     "itemList(uint256)": FunctionFragment;
     "itemStructs(uint256)": FunctionFragment;
     "list(uint256,uint256)": FunctionFragment;
@@ -38,16 +49,20 @@ export interface ShopInterface extends utils.Interface {
     "purchase(uint256,uint256)": FunctionFragment;
     "remove(uint256)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "setItemContract(address)": FunctionFragment;
     "setTreasuryContract(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "treasuryContract()": FunctionFragment;
     "update(uint256,uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "getItem"
       | "getItemCount"
       | "getItems"
       | "isEntity"
+      | "itemContractAddress"
       | "itemList"
       | "itemStructs"
       | "list"
@@ -55,11 +70,17 @@ export interface ShopInterface extends utils.Interface {
       | "purchase"
       | "remove"
       | "renounceOwnership"
+      | "setItemContract"
       | "setTreasuryContract"
       | "transferOwnership"
+      | "treasuryContract"
       | "update"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "getItem",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "getItemCount",
     values?: undefined
@@ -68,6 +89,10 @@ export interface ShopInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "isEntity",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "itemContractAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "itemList",
@@ -95,6 +120,10 @@ export interface ShopInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
+    functionFragment: "setItemContract",
+    values: [string]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setTreasuryContract",
     values: [string]
   ): string;
@@ -103,16 +132,25 @@ export interface ShopInterface extends utils.Interface {
     values: [string]
   ): string;
   encodeFunctionData(
+    functionFragment: "treasuryContract",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "update",
     values: [BigNumberish, BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "getItem", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getItemCount",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "getItems", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "isEntity", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "itemContractAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "itemList", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "itemStructs",
@@ -127,11 +165,19 @@ export interface ShopInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setItemContract",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "setTreasuryContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "treasuryContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "update", data: BytesLike): Result;
@@ -238,6 +284,11 @@ export interface Shop extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    getItem(
+      _itemId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[Shop.ItemStructOutput]>;
+
     getItemCount(
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { itemCount: BigNumber }>;
@@ -248,6 +299,8 @@ export interface Shop extends BaseContract {
       _itemId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    itemContractAddress(overrides?: CallOverrides): Promise<[string]>;
 
     itemList(
       arg0: BigNumberish,
@@ -284,6 +337,11 @@ export interface Shop extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    setItemContract(
+      _itemContractAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     setTreasuryContract(
       _treasuryContractAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -294,6 +352,8 @@ export interface Shop extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    treasuryContract(overrides?: CallOverrides): Promise<[string]>;
+
     update(
       _itemId: BigNumberish,
       _itemPrice: BigNumberish,
@@ -301,11 +361,18 @@ export interface Shop extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  getItem(
+    _itemId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<Shop.ItemStructOutput>;
+
   getItemCount(overrides?: CallOverrides): Promise<BigNumber>;
 
   getItems(overrides?: CallOverrides): Promise<[BigNumber[], BigNumber[]]>;
 
   isEntity(_itemId: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+  itemContractAddress(overrides?: CallOverrides): Promise<string>;
 
   itemList(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -339,6 +406,11 @@ export interface Shop extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  setItemContract(
+    _itemContractAddress: string,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   setTreasuryContract(
     _treasuryContractAddress: string,
     overrides?: Overrides & { from?: string | Promise<string> }
@@ -349,6 +421,8 @@ export interface Shop extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  treasuryContract(overrides?: CallOverrides): Promise<string>;
+
   update(
     _itemId: BigNumberish,
     _itemPrice: BigNumberish,
@@ -356,6 +430,11 @@ export interface Shop extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    getItem(
+      _itemId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<Shop.ItemStructOutput>;
+
     getItemCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     getItems(overrides?: CallOverrides): Promise<[BigNumber[], BigNumber[]]>;
@@ -364,6 +443,8 @@ export interface Shop extends BaseContract {
       _itemId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    itemContractAddress(overrides?: CallOverrides): Promise<string>;
 
     itemList(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -392,6 +473,11 @@ export interface Shop extends BaseContract {
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
+    setItemContract(
+      _itemContractAddress: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     setTreasuryContract(
       _treasuryContractAddress: string,
       overrides?: CallOverrides
@@ -401,6 +487,8 @@ export interface Shop extends BaseContract {
       newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    treasuryContract(overrides?: CallOverrides): Promise<string>;
 
     update(
       _itemId: BigNumberish,
@@ -458,6 +546,11 @@ export interface Shop extends BaseContract {
   };
 
   estimateGas: {
+    getItem(
+      _itemId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getItemCount(overrides?: CallOverrides): Promise<BigNumber>;
 
     getItems(overrides?: CallOverrides): Promise<BigNumber>;
@@ -466,6 +559,8 @@ export interface Shop extends BaseContract {
       _itemId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    itemContractAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     itemList(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -497,6 +592,11 @@ export interface Shop extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    setItemContract(
+      _itemContractAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     setTreasuryContract(
       _treasuryContractAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -507,6 +607,8 @@ export interface Shop extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    treasuryContract(overrides?: CallOverrides): Promise<BigNumber>;
+
     update(
       _itemId: BigNumberish,
       _itemPrice: BigNumberish,
@@ -515,12 +617,21 @@ export interface Shop extends BaseContract {
   };
 
   populateTransaction: {
+    getItem(
+      _itemId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getItemCount(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     getItems(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     isEntity(
       _itemId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    itemContractAddress(
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -557,6 +668,11 @@ export interface Shop extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    setItemContract(
+      _itemContractAddress: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     setTreasuryContract(
       _treasuryContractAddress: string,
       overrides?: Overrides & { from?: string | Promise<string> }
@@ -566,6 +682,8 @@ export interface Shop extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    treasuryContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     update(
       _itemId: BigNumberish,

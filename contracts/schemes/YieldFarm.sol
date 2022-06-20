@@ -24,11 +24,11 @@ contract YieldFarm is BaseScheme {
     }
 
     function complete(address _who) public override {
-        uint256 successGauge = getSuccessGauge();
+//        uint256 successGauge = getSuccessGauge();
 
-        if (successChance >= successGauge) {
-            mint(_who, 33);
-        } else {}
+//        if (successChance >= successGauge) {
+//            mint(_who, 33);
+//        } else {}
     }
 
     function getSchemeName() internal pure override returns (string memory) {

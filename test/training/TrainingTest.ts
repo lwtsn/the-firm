@@ -1,17 +1,20 @@
-import { PlayerStats, Training } from '../../typechain';
-import { deployTrainingContract, getBlockTime, getProvider, wait } from '../helpers/contract';
+import { Training } from '../../typechain';
+import { deployTrainingContract, getAccounts, getBlockTime, wait } from '../helpers/contract';
 import { deployMockContract, MockContract } from 'ethereum-waffle';
 import PlayerStatsArtifact from '../../artifacts/contracts/player/PlayerStats.sol/PlayerStats.json';
 import { expect } from 'chai';
 import { oneDay, oneEther, oneHour } from '../helpers/numbers';
-
-const [alice] = getProvider().getWallets();
+import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers';
 
 describe('Training', () => {
   let training: Training;
-  let playerStats: PlayerStats | MockContract;
+  let playerStats: MockContract;
+
+  let alice: SignerWithAddress;
 
   before(async () => {
+    [alice] = await getAccounts();
+
     playerStats = await deployMockContract(alice, PlayerStatsArtifact.abi);
     training = await deployTrainingContract(alice);
     await training.setPlayerStats(playerStats.address);
@@ -22,12 +25,13 @@ describe('Training', () => {
   });
 
   it('Should allow training to be started and finished', async () => {
+    const startTime = await getBlockTime();
     await training.start(1, 0);
 
     await training.callStatic.trainingMapping(alice.address).then(async (training: any) => {
       const blockTime = await getBlockTime();
       expect(training.stat).to.eq(1);
-      expect(training.startTime).to.eq(blockTime);
+      expect(training.startTime).to.eq(startTime);
       expect(training.stopTime).to.eq(blockTime + 3600);
       expect(training.isTraining).to.eq(true);
     });
@@ -53,49 +57,49 @@ describe('Training', () => {
 
     it('Training Strength for 2 hours', async () => {
       await training.start(1, 1);
-      await playerStats.mock.increaseBattleStats.withArgs(alice.address, '12000000000000000', 0, 0, 0).returns();
+      await playerStats.increaseBattleStats.withArgs(alice.address, '12000000000000000', 0, 0, 0).returns();
       await wait(oneHour * 2);
     });
 
     it('Training Dexterity for 4 hours', async () => {
       await training.start(2, 2);
-      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, '24480000000000000', 0, 0).returns();
+      await playerStats.increaseBattleStats.withArgs(alice.address, 0, '24480000000000000', 0, 0).returns();
       await wait(oneHour * 4);
     });
 
     it('Training Defence for 8 hours', async () => {
       await training.start(3, 3);
-      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, 0, '49920000000000000', 0).returns();
+      await playerStats.increaseBattleStats.withArgs(alice.address, 0, 0, '49920000000000000', 0).returns();
       await wait(oneHour * 8);
     });
 
     it('Training Constitution for 12 hours', async () => {
       await training.start(4, 4);
-      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, 0, 0, '76320000000000000').returns();
+      await playerStats.increaseBattleStats.withArgs(alice.address, 0, 0, 0, '76320000000000000').returns();
       await wait(oneHour * 12);
     });
 
     it('Training Strength for 1 day', async () => {
       await training.start(1, 5);
-      await playerStats.mock.increaseBattleStats.withArgs(alice.address, '155520000000000000', 0, 0, 0).returns();
+      await playerStats.increaseBattleStats.withArgs(alice.address, '155520000000000000', 0, 0, 0).returns();
       await wait(oneDay);
     });
 
     it('Training Dexterity for 2 days', async () => {
       await training.start(2, 6);
-      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, '316800000000000000', 0, 0).returns();
+      await playerStats.increaseBattleStats.withArgs(alice.address, 0, '316800000000000000', 0, 0).returns();
       await wait(oneDay * 2);
     });
 
     it('Training Defence for 4 days', async () => {
       await training.start(3, 7);
-      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, 0, '691200000000000000', 0).returns();
+      await playerStats.increaseBattleStats.withArgs(alice.address, 0, 0, '691200000000000000', 0).returns();
       await wait(oneDay * 4);
     });
 
     it('Training Constitution for 1 week', async () => {
       await training.start(4, 8);
-      await playerStats.mock.increaseBattleStats.withArgs(alice.address, 0, 0, 0, '1260000000000000000').returns();
+      await playerStats.increaseBattleStats.withArgs(alice.address, 0, 0, 0, '1260000000000000000').returns();
       await wait(oneDay * 7);
     });
   });
